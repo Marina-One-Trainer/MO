@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Christine - Trainer Profile</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f8f8;
+      color: #fff;
+    }
+
+    /* Profile Card Layout */
+    .profile-card {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #d0001f;
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .profile-image {
+      flex: 1 1 300px;
+      min-width: 300px;
+    }
+
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-details {
+      flex: 2 1 400px;
+      padding: 30px;
+    }
+
+    .profile-details h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .profile-details h2 {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+
+    .interests {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+    }
+
+    /* Toggle Buttons */
+    .section-toggle {
+      margin-bottom: 20px;
+    }
+
+    .section-toggle button {
+      background-color: #fff;
+      color: #d0001f;
+      border: 2px solid #fff;
+      padding: 8px 16px;
+      margin-right: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .section-toggle button:hover {
+      background-color: #fff;
+      color: #d0001f;
+    }
+
+    /* Skills/Certifications Content */
+    .section-block {
+      background: #b8001a;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .section-block h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-block ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .section-block li {
+      margin: 6px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .section-block li::before {
+      content: "•";
+      color: white;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Philosophy Section */
+    .philosophy {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-left: 5px solid #ffffff;
+      margin-top: 20px;
+      border-radius: 6px;
+    }
+
+    .philosophy h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .philosophy p {
+      font-style: italic;
+      color: #f0f0f0;
+      margin: 0;
+    }
+
+    /* Contact Info */
+    .contact-info {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #d0001f;
+      border-radius: 6px;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5em;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    /* Member ID Section */
+    .member-id-section {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #b8001a;
+      border-radius: 8px;
+    }
+
+    .member-id-section input {
+      padding: 8px;
+      width: 80%;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    .member-id-section button {
+      padding: 8px 12px;
+      background-color: #fff;
+      color: #d0001f;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #qr-code {
+      margin-top: 10px;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #fff;
+      color: #d0001f;
+      border: 2px solid #fff;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Testimonials */
+    .testimonial-section {
+      background-color: #fff;
+      padding: 40px 20px;
+      margin: 40px auto;
+      border-top: 4px solid #d0001f;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      max-width: 1000px;
+    }
+
+    .testimonial-container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      color: #333;
+    }
+
+    .testimonial-container h2 {
+      font-size: 2em;
+      color: #d0001f;
+      margin-bottom: 20px;
+    }
+
+    .placeholder {
+      font-style: italic;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-card">
+    <div class="profile-image">
+      <img src="Christine.jpeg" alt="Christine - Trainer" />
+    </div>
+    <div class="profile-details">
+      <h1>Christine</h1>
+      <h2>Coach</h2>
+      <div class="interests">
+        <strong>About Me:</strong> Certified personal trainer with 6 years of experience, specialising in women’s health, functional fitness, and pre/post-natal training. I help women aged 30–60 build strength, move with confidence, and enjoy fitness as a sustainable part of their lifestyle.
+      </div>
+
+      <!-- Toggle Buttons -->
+      <div class="section-toggle">
+        <button onclick="showSkills()">Show Skills</button>
+        <button onclick="showCertifications()">Show Certifications</button>
+      </div>
+
+      <!-- Skills / Certifications -->
+      <div id="toggle-section" class="section-block">
+        <h3 id="toggle-title">Skills</h3>
+        <ul id="toggle-content">
+          <li>Functional & sustainable training</li>
+          <li>Core strengthening & scoliosis support</li>
+          <li>Fat loss & weight management</li>
+          <li>Coaching senior population</li>
+          <li>Animal Flow</li>
+        </ul>
+      </div>
+
+      <!-- Philosophy -->
+      <div class="philosophy">
+        <h3>Philosophy</h3>
+        <p>"Fitness should be sustainable, empowering, and enjoyable. I love supporting clients through every stage of life."</p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <div class="notification" style="background-color: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+          <p style="margin: 0; font-style: italic;">After scanning the QR Code, our trainers will contact you within 24-48 hours.</p>
+        </div>
+
+        <!-- Member ID + QR Code -->
+        <div class="member-id-section">
+          <label for="memberId">Enter Your Member ID:</label><br>
+          <input type="text" id="memberId" placeholder="e.g. 123456789"/><br>
+          <button onclick="generateQRCode()">Generate QR Code</button>
+          <div id="qr-code"></div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <a class="back-link" href="../Main.html">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <section class="testimonial-section">
+    <div class="testimonial-container">
+      <h2>Client Testimonials</h2>
+      <p class="placeholder">No testimonials available yet. Check back soon!</p>
+    </div>
+  </section>
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <script>
+    const skills = [
+      "Functional & sustainable training",
+      "Core strengthening & scoliosis support",
+      "pre/post-natal training",
+      "Fat loss & weight management",
+      "Coaching senior population",
+      "Animal Flow"
+    ];
+
+    const certifications = [
+      "ACE Certified Personal Trainer",
+      "NASM Certified Personal Trainer",
+      "Pre/Post-Natal Training Certification",
+    ];
+
+    // Toggle Skills
+    function showSkills() {
+      document.getElementById("toggle-title").textContent = "Skills";
+      document.getElementById("toggle-content").innerHTML = skills.map(item => `<li>${item}</li>`).join('');
+    }
+
+    // Toggle Certifications
+    function showCertifications() {
+      document.getElementById("toggle-title").textContent = "Certifications";
+      document.getElementById("toggle-content").innerHTML = certifications.map(item => `<li>${item}</li>`).join('');
+    }
+
+    // Generate QR Code
+    function generateQRCode() {
+      const memberId = document.getElementById("memberId").value || "___________";
+      const email = "Christine.Cheah@virginactive.com.sg";
+      const subject = encodeURIComponent("Training Inquiry");
+      const body = encodeURIComponent(
+        `Hello Christine,\n\nMy Member ID is: ${memberId}\n\nI am interested in learning more about personal training and would like to have a wellness consultation.`
+      );
+
+      const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+
+      const qrContainer = document.getElementById("qr-code");
+      qrContainer.innerHTML = "";
+
+      new QRCode(qrContainer, {
+        text: mailtoLink,
+        width: 250,
+        height: 250,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    // Load default Skills on page load
+    window.onload = function() {
+      showSkills();
+    };
+  </script>
+</body>
+</html>
