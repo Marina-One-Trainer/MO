@@ -32,7 +32,7 @@
     .hero-divider{width:48px;height:2px;background:var(--red);margin:1.75rem 0;animation:fadeUp 0.7s 0.2s ease both;}
     .hero-about{font-size:1rem;line-height:1.78;color:rgba(0,0,0,0.58);max-width:46ch;animation:fadeUp 0.7s 0.25s ease both;}
     .hero-about strong{color:var(--black);font-weight:600;}
-    .hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);animation:fadeUp 0.7s 0.3s ease both;flex-wrap:wrap;}
+    .hero-stats{display:flex;flex-wrap:nowrap;gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);animation:fadeUp 0.7s 0.3s ease both;}.stat-item{flex:1;min-width:0;}
     .stat-number{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:0.04em;color:var(--red);line-height:1;}
     .stat-label{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:0.3rem;line-height:1.4;}
     .content{max-width:1100px;margin:0 auto;padding:5rem 2rem 6rem;}
@@ -54,7 +54,7 @@
     .cert-icon svg{width:18px;height:18px;stroke:var(--red);fill:none;}
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem;}
     .philosophy-card{background:var(--black);border-radius:12px;padding:2.5rem;position:relative;overflow:hidden;}
-    .philosophy-card::before{content:"C";position:absolute;top:-1.5rem;left:1.5rem;font-family:"DM Serif Display",serif;font-size:10rem;line-height:1;color:rgba(232,25,44,0.12);pointer-events:none;}
+    .philosophy-card::before{content:"\201C";position:absolute;top:-1.5rem;left:1.5rem;font-family:"DM Serif Display",serif;font-size:10rem;line-height:1;color:rgba(232,25,44,0.12);pointer-events:none;}
     .card-label{font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;font-weight:700;margin-bottom:1.25rem;}
     .philosophy-card .card-label{color:var(--red);}
     .philosophy-quote{font-family:"DM Serif Display",serif;font-style:italic;font-size:1.2rem;line-height:1.65;color:#fff;position:relative;z-index:1;margin-bottom:1rem;}
@@ -78,19 +78,28 @@
     .section-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:0.03em;line-height:1;color:var(--black);}
     .section-title span{font-family:"DM Serif Display",serif;font-style:italic;color:var(--red);}
     .divider{width:48px;height:2px;background:var(--red);margin:1.25rem auto 0;}
-    .testimonials-placeholder{text-align:center;padding:3.5rem 2rem;background:#fff;border:1px dashed rgba(0,0,0,0.1);border-radius:12px;color:var(--muted);font-size:0.9rem;font-style:italic;}
+    .testimonial-text{font-size:1rem;line-height:1.7;color:#444;margin-bottom:1rem;font-style:italic;}
+    .client-name{font-weight:700;color:var(--red);font-size:0.9rem;}
+    .carousel-item{display:none;animation:fadeUp 0.5s ease;padding:1rem 0;}
+    .carousel-item.active{display:block;}
+    .carousel-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:1.5rem;}
+    .nav-btn{cursor:pointer;font-size:20px;padding:6px 12px;color:var(--red);font-weight:bold;border-radius:8px;background:rgba(255,255,255,0.9);border:1px solid rgba(232,25,44,0.2);transition:background 0.25s,color 0.25s;}
+    .nav-btn:hover{background:var(--red);color:#fff;}
+    .dots{display:flex;align-items:center;gap:8px;}
+    .dot{height:10px;width:10px;background:#ccc;border-radius:50%;cursor:pointer;transition:background 0.25s;}
+    .dot.active{background:var(--red);}
     footer{padding:2rem 2.5rem;background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
     .footer-logo{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:0.15em;color:var(--red);opacity:0.5;}
     footer p{font-size:0.72rem;color:var(--muted);}
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
     @media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;}.hero-image{height:65vw;max-height:500px;}.hero-image-overlay{background:linear-gradient(to bottom,transparent 55%,var(--white) 100%);}.hero-content{padding:2.5rem 1.5rem 3rem;}.two-col{grid-template-columns:1fr;}}
-    @media(max-width:600px){nav{padding:0.9rem 1.25rem;}.form-row{flex-direction:column;}.skills-grid{grid-template-columns:1fr 1fr;}footer{flex-direction:column;text-align:center;}}
+    @media(max-width:600px){nav{padding:0.9rem 1.25rem;}.form-row{flex-direction:column;}.skills-grid{grid-template-columns:1fr 1fr;}.hero-stats{gap:1rem;}.stat-number{font-size:1.5rem;}.stat-label{font-size:0.6rem;}footer{flex-direction:column;text-align:center;}}
   </style>
 </head>
 <body>
 <nav id="mainNav">
   <div class="nav-logo-text">VIRGIN ACTIVE</div>
-  <a href="../Main.html#trainers" class="nav-back">
+  <a href="../index.html#trainers" class="nav-back">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     Back to Coaches
   </a>
@@ -170,11 +179,8 @@
     </div>
 
     <div class="carousel">
-
       <div class="carousel-item active">
-        <p class="testimonial-text">I started as a complete beginner and initially felt overwhelmed in the gym. Reuben made the experience much more manageable by taking the time to understand my goals and adjusting each session to my level.
-He is patient, clear, and creates a comfortable environment that helps me build confidence step by step. His support goes beyond the sessions, especially in guiding meal discipline, which I’ve come to realise is just as important as training itself.
-With his guidance, I’ve gradually become more confident and consistent, and I feel genuinely good about the progress, both physically and mentally. I’m grateful for his support and the steady progress we’ve built together.</p>
+        <p class="testimonial-text">I started as a complete beginner and initially felt overwhelmed in the gym. Reuben made the experience much more manageable by taking the time to understand my goals and adjusting each session to my level. He is patient, clear, and creates a comfortable environment that helps me build confidence step by step. His support goes beyond the sessions, especially in guiding meal discipline, which I've come to realise is just as important as training itself. With his guidance, I've gradually become more confident and consistent, and I feel genuinely good about the progress, both physically and mentally. I'm grateful for his support and the steady progress we've built together.</p>
         <p class="client-name">— Wanwan</p>
       </div>
     </div>
@@ -209,6 +215,21 @@ With his guidance, I’ve gradually become more confident and consistent, and I 
     qrContainer.innerHTML="";
     new QRCode(qrContainer,{text:mailtoLink,width:200,height:200,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
   }
+  let currentSlideIndex=0;
+  let slideInterval;
+  function showSlide(index){
+    const slides=document.querySelectorAll(".carousel-item");
+    const dots=document.querySelectorAll(".dot");
+    slides.forEach((s,i)=>{s.classList.remove("active");if(dots[i])dots[i].classList.remove("active");});
+    currentSlideIndex=(index+slides.length)%slides.length;
+    slides[currentSlideIndex].classList.add("active");
+    if(dots[currentSlideIndex])dots[currentSlideIndex].classList.add("active");
+  }
+  function moveSlide(dir){showSlide(currentSlideIndex+dir);resetInterval();}
+  function goToSlide(i){showSlide(i);resetInterval();}
+  function startAutoRotation(){slideInterval=setInterval(()=>moveSlide(1),5000);}
+  function resetInterval(){clearInterval(slideInterval);startAutoRotation();}
+  window.onload=function(){showSlide(0);startAutoRotation();};
 </script>
 </body>
 </html>
