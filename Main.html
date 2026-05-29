@@ -1848,15 +1848,15 @@ Guidelines:
 
     try {
       const res = await fetch('https://workers-playground-dawn-breeze-ec22.marinaonetrainer1.workers.dev', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1000,
+    system: SYSTEM_PROMPT,
+    messages: history
+  })
+});
 
       const data = await res.json();
       typing.remove();
