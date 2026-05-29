@@ -791,26 +791,149 @@
         /* section bg override */
         #trainers, body, #contact { background: #fff; }
 
+        /* ─── TOUCH / TAP IMPROVEMENTS ─── */
+        /* Ensure tap targets are large enough on mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .coach-card:hover, .trainer-card:hover { transform: none; }
+            .coach-card:active { transform: scale(0.97); border-color: rgba(232,25,44,0.4); }
+            .btn-primary:hover, .btn-outline:hover { transform: none; }
+            .btn-primary:active { transform: scale(0.97); }
+            .nav-links a::after { display: none; }
+            .pricing-card:hover { transform: none; }
+            .ft-card:hover { transform: none; }
+        }
+
+        /* Safe area padding for notched phones (iPhone X+) */
+        nav { padding-top: max(1.25rem, env(safe-area-inset-top)); }
+        footer { padding-bottom: max(2.5rem, env(safe-area-inset-bottom)); }
+        .mobile-menu { padding-top: max(1rem, env(safe-area-inset-top)); }
+
+        /* Prevent text size adjust on orientation change */
+        html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+        /* Smooth scrolling on iOS */
+        .ai-messages, .custom-select-menu { -webkit-overflow-scrolling: touch; }
+
         /* ─── RESPONSIVE ─── */
+        /* ─── RESPONSIVE ─── */
+
+        /* Laptop / small desktop */
         @media (max-width: 1024px) {
             .coaches-grid { grid-template-columns: repeat(3, 1fr); }
             .ft-grid { grid-template-columns: repeat(2, 1fr); }
-            .pricing-cards { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+            #trainers { padding: 5rem 1.5rem; }
         }
 
+        /* Tablet / iPad landscape (768–1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .senior-featured .coach-card { width: clamp(200px, 28%, 320px); }
+            .senior-row .coach-card { width: clamp(160px, 22%, 240px); }
+            .hero h1 { font-size: clamp(4rem, 12vw, 8rem); }
+            nav { padding: 1rem 2rem; }
+        }
+
+        /* iPad portrait + tablet (481–768px) */
         @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
             .nav-links { display: none; }
             .hamburger { display: flex; }
-            .senior-row { grid-template-columns: repeat(2, 1fr); }
-            .coaches-grid { grid-template-columns: repeat(2, 1fr); }
-            .ft-grid { grid-template-columns: 1fr 1fr; }
+
+            /* hero */
+            .hero { padding: 7rem 1.5rem 4rem; }
+            .hero h1 { font-size: clamp(3.5rem, 13vw, 6rem); }
+            .hero-sub { font-size: 1rem; max-width: 36ch; }
+            .hero-actions { gap: 0.75rem; }
+            .btn-primary, .btn-outline { padding: 0.75rem 1.5rem; font-size: 0.8rem; }
+
+            /* sections */
+            #trainers { padding: 4rem 1.25rem; }
+            #pricing  { padding: 4rem 1.25rem; }
+            #contact  { padding: 4rem 1.25rem; }
+
+            /* senior pyramid */
+            .senior-grid { gap: 1rem; }
+            .senior-featured { justify-content: center; }
+            .senior-featured .coach-card { width: clamp(160px, 45%, 260px); }
+            .senior-row { gap: 0.85rem; }
+            .senior-row .coach-card { width: clamp(140px, 44%, 220px); }
+
+            /* coaches */
+            .coaches-grid { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+
+            /* pricing */
+            .coach-selector button { padding: 0.6rem 1rem; font-size: 0.72rem; }
+            .ft-grid { grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+            .pricing-cards { max-width: 100%; }
+
+            /* contact */
+            .contact-form { padding: 2rem 1.5rem; }
+
+            /* section header */
+            .section-title { font-size: clamp(2rem, 7vw, 3.5rem); }
+
+            /* footer */
+            footer { flex-direction: column; text-align: center; gap: 0.75rem; padding: 2rem 1.5rem; }
         }
 
+        /* Mobile (≤480px) */
         @media (max-width: 480px) {
-            .coaches-grid { grid-template-columns: 1fr 1fr; }
-            .hero h1 { font-size: 4.5rem; }
-            .contact-form { padding: 2rem 1.5rem; }
-            footer { flex-direction: column; text-align: center; }
+            nav { padding: 0.9rem 1.1rem; }
+
+            /* hero */
+            .hero { padding: 6rem 1.1rem 3.5rem; }
+            .hero h1 { font-size: clamp(3rem, 16vw, 4.5rem); line-height: 0.9; }
+            .hero-sub { font-size: 0.92rem; }
+            .hero-actions { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-outline { width: 100%; text-align: center; }
+
+            /* hero tag pill */
+            .hero-tag { font-size: 0.62rem; padding: 0.35rem 0.9rem; }
+
+            /* sections */
+            #trainers { padding: 3rem 1rem; }
+            #pricing  { padding: 3rem 1rem; }
+            #contact  { padding: 3rem 1rem; }
+
+            /* senior pyramid — stack on very small screens */
+            .senior-featured .coach-card { width: clamp(140px, 70%, 220px); }
+            .senior-row { gap: 0.65rem; }
+            .senior-row .coach-card { width: clamp(130px, 46%, 200px); }
+
+            /* coaches grid — 2 col stays but tighter */
+            .coaches-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+            .coach-name { font-size: 1.1rem; }
+            .coach-card-body { padding: 0.75rem 0.85rem 0.9rem; }
+
+            /* pricing */
+            .coach-selector { border-radius: 6px; }
+            .coach-selector button { padding: 0.55rem 0.85rem; font-size: 0.7rem; }
+            .ft-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+            .ft-card { padding: 1.1rem; }
+            .ft-label { font-size: 1.6rem; }
+            .ft-price { font-size: 1.8rem; }
+            .pricing-card { padding: 1.5rem; }
+            .pricing-price { font-size: 2.8rem; }
+
+            /* contact */
+            .contact-form { padding: 1.5rem 1.1rem; border-radius: 12px; }
+            .form-input, .form-select { font-size: 0.9rem; padding: 0.75rem 0.85rem; }
+
+            /* section header */
+            .section-title { font-size: clamp(1.8rem, 10vw, 2.8rem); }
+            .section-tag { font-size: 0.6rem; }
+
+            /* footer */
+            footer { padding: 1.5rem 1rem; flex-direction: column; text-align: center; }
+            footer p { font-size: 0.7rem; }
+        }
+
+        /* Very small phones (≤360px) */
+        @media (max-width: 360px) {
+            .hero h1 { font-size: 2.8rem; }
+            .coaches-grid { gap: 0.5rem; }
+            .coach-name { font-size: 1rem; }
+            .senior-row .coach-card { width: clamp(120px, 46%, 180px); }
         }
     </style>
 </head>
@@ -885,7 +1008,7 @@
 
         <div class="senior-row">
             <a href="Sheril/Sheril.html" class="coach-card">
-                <img src="sheril.jpeg" alt="Sheril" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/f0f0f0/999?text=Sheril'">
+                <img src="Sheril.jpg" alt="Sheril" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/f0f0f0/999?text=Sheril'">
                 <div class="coach-card-body">
                     <div class="coach-name">Sheril</div>
                     <div class="coach-role" style="color:var(--red)">Senior Coach</div>
@@ -905,13 +1028,6 @@
                     <div class="coach-role" style="color:var(--red)">Senior Coach</div>
                 </div>
             </a>
-            <a href="Joshua/Joshua.html" class="coach-card">
-                <img src="Joshua.jpg" alt="Joshua" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/f0f0f0/999?text=Daya'">
-                <div class="coach-card-body">
-                    <div class="coach-name">Joshua</div>
-                    <div class="coach-role" style="color:var(--red)">Senior Coach</div>
-                </div>
-            </a>
         </div>
     </div>
 
@@ -919,19 +1035,19 @@
     <div class="trainer-tier-label reveal" style="margin-top: 4rem;">Certified Coaches</div>
 
     <div class="coaches-grid reveal">
-        <a href="Mario/Mario.html" class="coach-card"><img src="Mario.jpg" alt="Mario" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Mario'"><div class="coach-card-body"><div class="coach-name">Mario</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Chips/Chips.html" class="coach-card"><img src="Chips.jpg" alt="Chips" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Chips'"><div class="coach-card-body"><div class="coach-name">Chips</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Roki/Roki.html" class="coach-card"><img src="Roki.jpg" alt="Roki" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Roki'"><div class="coach-card-body"><div class="coach-name">Roki</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Haris/Haris.html" class="coach-card"><img src="Haris.jpeg" alt="Haris" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Haris'"><div class="coach-card-body"><div class="coach-name">Haris</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-<a href="Hafiz/Hafiz.html" class="coach-card"><img src="Hafiz.jpg" alt="Hafiz" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Hafiz'"><div class="coach-card-body"><div class="coach-name">Hafiz</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Gwen/Gwen.html" class="coach-card"><img src="Gwen.jpeg" alt="Gwen" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Gwen'"><div class="coach-card-body"><div class="coach-name">Gwen</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Po/Po.html" class="coach-card"><img src="Po.jpeg" alt="Po" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Po'"><div class="coach-card-body"><div class="coach-name">Po</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Reuben/Reuben.html" class="coach-card"><img src="Reuben.jpg" alt="Reuben" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Reuben'"><div class="coach-card-body"><div class="coach-name">Reuben</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Daran/Daran.html" class="coach-card"><img src="Daran.jpeg" alt="Daran" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Daran'"><div class="coach-card-body"><div class="coach-name">Daran</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Jomari/Jomari.html" class="coach-card"><img src="Jomari.jpeg" alt="Jomari" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Jomari'"><div class="coach-card-body"><div class="coach-name">Jomari</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Kurnia/Kurnia.html" class="coach-card"><img src="Kurnia.jpeg" alt="Kurnia" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Kurnia'"><div class="coach-card-body"><div class="coach-name">Kurnia</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-        <a href="Imran/Imran.html" class="coach-card"><img src="Imran.jpeg" alt="Imran" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Imran'"><div class="coach-card-body"><div class="coach-name">Imran</div><div class="coach-role" style="color:var(--red)">Coach</div></div></a>
-    </div>
+        <a href="Mario/Mario.html" class="coach-card"><img src="Mario.jpg" alt="Mario" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Mario'"><div class="coach-card-body"><div class="coach-name">Mario</div><div class="coach-role">Coach</div></div></a>
+        <a href="Hafiz/Hafiz.html" class="coach-card"><img src="Hafiz.jpg" alt="Hafiz" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Hafiz'"><div class="coach-card-body"><div class="coach-name">Hafiz</div><div class="coach-role">Coach</div></div></a>
+        <a href="Roki/Roki.html" class="coach-card"><img src="Roki.jpg" alt="Roki" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Roki'"><div class="coach-card-body"><div class="coach-name">Roki</div><div class="coach-role">Coach</div></div></a>
+        <a href="Haris/Haris.html" class="coach-card"><img src="Haris.jpeg" alt="Haris" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Haris'"><div class="coach-card-body"><div class="coach-name">Haris</div><div class="coach-role">Coach</div></div></a>
+        <a href="Chips/Chips.html" class="coach-card"><img src="Chips.jpg" alt="Chips" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Chips'"><div class="coach-card-body"><div class="coach-name">Chips</div><div class="coach-role">Coach</div></div></a>
+        <a href="Gwen/Gwen.html" class="coach-card"><img src="Gwen.jpeg" alt="Gwen" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Gwen'"><div class="coach-card-body"><div class="coach-name">Gwen</div><div class="coach-role">Coach</div></div></a>
+        <a href="Joshua/Joshua.html" class="coach-card"><img src="Joshua.jpeg" alt="Joshua" class="coach-card-img" style="object-position:center center;" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Joshua'"><div class="coach-card-body"><div class="coach-name">Joshua</div><div class="coach-role">Coach</div></div></a>
+        <a href="Po/Po.html" class="coach-card"><img src="Po.jpeg" alt="Po" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Po'"><div class="coach-card-body"><div class="coach-name">Po</div><div class="coach-role">Coach</div></div></a>
+        <a href="Reuben/Reuben.html" class="coach-card"><img src="Reuben.jpg" alt="Reuben" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Reuben'"><div class="coach-card-body"><div class="coach-name">Reuben</div><div class="coach-role">Coach</div></div></a>
+        <a href="Daran/Daran.html" class="coach-card"><img src="Daran.jpeg" alt="Daran" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Daran'"><div class="coach-card-body"><div class="coach-name">Daran</div><div class="coach-role">Coach</div></div></a>
+        <a href="Jomari/Jomari.html" class="coach-card"><img src="Jomari.jpeg" alt="Jomari" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Jomari'"><div class="coach-card-body"><div class="coach-name">Jomari</div><div class="coach-role">Coach</div></div></a>
+        <a href="Kurnia/Kurnia.html" class="coach-card"><img src="Kurnia.jpeg" alt="Kurnia" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Kurnia'"><div class="coach-card-body"><div class="coach-name">Kurnia</div><div class="coach-role">Coach</div></div></a>
+        <a href="Imran/Imran.html" class="coach-card"><img src="Imran.jpeg" alt="Imran" class="coach-card-img" onerror="this.src='https://placehold.co/300x400/1A1A1A/888?text=Imran'"><div class="coach-card-body"><div class="coach-name">Imran</div><div class="coach-role">Coach</div></div></a>
     </div>
 </section>
 
@@ -964,7 +1080,7 @@
                 <div class="pricing-divider"></div>
                 <ul class="pricing-features">
                     <li>3 Sessions Package</li>
-                    <li>1-month Expiry</li>
+                    <li>1-month commitment</li>
                 </ul>
             </div>
 
@@ -977,7 +1093,7 @@
                 <div class="pricing-divider"></div>
                 <ul class="pricing-features">
                     <li>10 Sessions Package</li>
-                    <li>3-Month Expiry</li>
+                    <li>For steady progress</li>
                 </ul>
             </div>
 
@@ -1078,8 +1194,7 @@
                         <div class="custom-option" data-value="Daran">Daran</div>
                         <div class="custom-option" data-value="Jomari">Jomari</div>
                         <div class="custom-option" data-value="Kurnia">Kurnia</div>
-                        <div class="custom-option" data-value="Na'im">Na'im</div>
-                        <div class="custom-option" data-value="Imran">Imran</div>
+                                        <div class="custom-option" data-value="Imran">Imran</div>
                     </div>
                 </div>
             </div>
@@ -1216,6 +1331,578 @@
         })
         .catch(() => alert('There was an error. Please try again.'));
     });
+</script>
+
+<!-- ─── AI TRAINER FINDER WIDGET ─── -->
+<style>
+  /* ── Floating button ── */
+  #ai-chat-btn {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--red);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 32px rgba(232,25,44,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeUp 0.8s 1s ease both;
+  }
+  #ai-chat-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 40px rgba(232,25,44,0.55);
+  }
+  #ai-chat-btn svg { width: 26px; height: 26px; color: #fff; }
+
+  /* ── Notice bubble ── */
+  #ai-notice-bubble {
+    position: fixed; bottom: 5.5rem; right: 2rem; z-index: 998;
+    background: #111;
+    color: #fff;
+    border-radius: 14px 14px 4px 14px;
+    padding: 0.75rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    max-width: 230px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    animation: fadeUp 0.6s 1.8s ease both;
+    cursor: pointer;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  #ai-notice-bubble.hide {
+    opacity: 0; transform: translateY(8px); pointer-events: none;
+  }
+  #ai-notice-bubble strong { color: var(--red); font-weight: 700; }
+  #ai-notice-bubble .bubble-names {
+    margin-top: 0.35rem;
+    font-size: 0.75rem; color: rgba(255,255,255,0.55);
+    letter-spacing: 0.03em;
+  }
+  #ai-notice-bubble .bubble-dismiss {
+    margin-top: 0.5rem;
+    font-size: 0.68rem; color: rgba(255,255,255,0.35);
+    letter-spacing: 0.05em; display: block;
+  }
+  #ai-notice-bubble::after {
+    content: '';
+    position: absolute; bottom: -8px; right: 20px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #111;
+  }
+  /* Chat widget responsive */
+  @media (max-width: 768px) {
+    #ai-chat-window {
+      right: 1rem; left: 1rem;
+      width: auto; max-width: 100%;
+      bottom: 5.5rem;
+      border-radius: 16px;
+    }
+    #ai-notice-bubble {
+      right: 1rem; left: 1rem;
+      bottom: 5.5rem;
+      max-width: calc(100vw - 2rem);
+      border-radius: 12px 12px 4px 12px;
+    }
+    #ai-chat-btn { right: 1.25rem; bottom: 1.25rem; }
+    .ai-messages { max-height: 260px; }
+    .quick-chips { padding: 0 1rem 0.75rem; gap: 0.4rem; }
+    .chip { font-size: 0.7rem; padding: 0.28rem 0.7rem; }
+  }
+
+  @media (max-width: 480px) {
+    #ai-chat-window { right: 0.75rem; left: 0.75rem; bottom: 5rem; }
+    #ai-notice-bubble { right: 0.75rem; left: 0.75rem; bottom: 5rem; max-width: calc(100vw - 1.5rem); }
+    #ai-chat-btn { right: 1rem; bottom: 1rem; width: 54px; height: 54px; }
+    .ai-header { padding: 0.9rem 1.1rem; }
+    .ai-header-name { font-size: 1rem; }
+    .ai-messages { max-height: 220px; padding: 1rem 1rem 0.5rem; }
+    .ai-input-area { padding: 0.7rem 0.85rem; }
+    #ai-input { font-size: 0.85rem; padding: 0.6rem 0.8rem; }
+    .msg { font-size: 0.84rem; }
+  }
+
+  .ai-btn-pulse {
+    position: absolute; inset: -4px; border-radius: 50%;
+    border: 2px solid rgba(232,25,44,0.4);
+    animation: pulsering 2s ease-out infinite;
+  }
+  @keyframes pulsering {
+    0%   { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.55); opacity: 0; }
+  }
+
+  /* ── Chat window ── */
+  #ai-chat-window {
+    position: fixed; bottom: 6.5rem; right: 2rem; z-index: 999;
+    width: 380px; max-width: calc(100vw - 2rem);
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.92) translateY(16px);
+    opacity: 0; pointer-events: none;
+    transform-origin: bottom right;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease;
+  }
+  #ai-chat-window.open {
+    transform: scale(1) translateY(0);
+    opacity: 1; pointer-events: all;
+  }
+
+  /* header */
+  .ai-header {
+    background: var(--red);
+    padding: 1.1rem 1.4rem;
+    display: flex; align-items: center; gap: 0.85rem;
+  }
+  .ai-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-avatar svg { width: 20px; height: 20px; color: #fff; }
+  .ai-header-text { flex: 1; }
+  .ai-header-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.08em; color: #fff;
+  }
+  .ai-header-sub {
+    font-size: 0.68rem; color: rgba(255,255,255,0.7);
+    letter-spacing: 0.05em;
+  }
+  .ai-close-btn {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.8); font-size: 1.3rem;
+    line-height: 1; padding: 0.2rem;
+    transition: color 0.15s;
+  }
+  .ai-close-btn:hover { color: #fff; }
+
+  /* messages */
+  .ai-messages {
+    flex: 1; overflow-y: auto;
+    padding: 1.25rem 1.25rem 0.5rem;
+    display: flex; flex-direction: column; gap: 0.85rem;
+    max-height: 340px;
+    scroll-behavior: smooth;
+  }
+  .ai-messages::-webkit-scrollbar { width: 3px; }
+  .ai-messages::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+  .msg {
+    max-width: 85%; line-height: 1.55;
+    font-size: 0.88rem; animation: msgIn 0.3s ease both;
+  }
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .msg-ai {
+    align-self: flex-start;
+    background: #F5F5F3;
+    color: #111;
+    padding: 0.75rem 1rem;
+    border-radius: 4px 16px 16px 16px;
+  }
+  .msg-user {
+    align-self: flex-end;
+    background: var(--red);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 16px 4px 16px 16px;
+  }
+  .msg-ai strong { color: var(--red); }
+  .msg-ai a {
+    color: var(--red); font-weight: 600;
+    text-decoration: none; border-bottom: 1px solid rgba(232,25,44,0.3);
+    transition: border-color 0.15s;
+  }
+  .msg-ai a:hover { border-color: var(--red); }
+
+  /* typing indicator */
+  .typing {
+    display: flex; gap: 4px; align-items: center;
+    padding: 0.75rem 1rem;
+    background: #F5F5F3; border-radius: 4px 16px 16px 16px;
+    align-self: flex-start;
+    animation: msgIn 0.3s ease both;
+  }
+  .typing span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #aaa;
+    animation: bounce 1.2s ease infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); }
+    40%         { transform: translateY(-6px); }
+  }
+
+  /* input area */
+  .ai-input-area {
+    padding: 0.85rem 1rem;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex; gap: 0.6rem; align-items: center;
+    background: #fff;
+  }
+  #ai-input {
+    flex: 1; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 10px; padding: 0.65rem 0.9rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    color: #111; transition: border-color 0.2s;
+    resize: none; outline: none;
+  }
+  #ai-input:focus { border-color: var(--red); }
+  #ai-send {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--red); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+  }
+  #ai-send:hover { background: var(--red-deep); transform: scale(1.05); }
+  #ai-send svg { width: 16px; height: 16px; color: #fff; }
+
+  /* testimonial card inside chat */
+  .testimonial-card {
+    background: rgba(232,25,44,0.05);
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 0.65rem 0.85rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.5;
+  }
+  .testimonial-card .t-quote {
+    font-style: italic;
+    color: #333;
+  }
+  .testimonial-card .t-client {
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0.05em;
+  }
+
+  /* quick chips */
+  .quick-chips {
+    display: flex; flex-wrap: wrap; gap: 0.45rem;
+    padding: 0 1.25rem 0.85rem;
+  }
+  .chip {
+    background: rgba(232,25,44,0.08);
+    border: 1px solid rgba(232,25,44,0.2);
+    color: var(--red); border-radius: 100px;
+    font-size: 0.75rem; font-weight: 600;
+    padding: 0.3rem 0.85rem; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .chip:hover { background: var(--red); color: #fff; }
+
+  /* mobile handled above */
+</style>
+
+<!-- Notice bubble -->
+<div id="ai-notice-bubble">
+  🤖 <strong>Not sure which trainer?</strong><br>
+  Our AI can match you based on your goals.
+  <span class="bubble-names">Fat loss · Strength · Pilates · HYROX · Rehab &amp; more</span>
+  <span class="bubble-dismiss">Tap here to find your match →</span>
+</div>
+
+<!-- Floating button -->
+<button id="ai-chat-btn" aria-label="Find your trainer">
+  <div class="ai-btn-pulse"></div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+</button>
+
+<!-- Chat window -->
+<div id="ai-chat-window">
+  <div class="ai-header">
+    <div class="ai-avatar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+    <div class="ai-header-text">
+      <div class="ai-header-name">Trainer Finder</div>
+      <div class="ai-header-sub">Powered by AI · Virgin Active Marina One</div>
+    </div>
+    <button class="ai-close-btn" id="ai-close">✕</button>
+  </div>
+
+  <div class="ai-messages" id="ai-messages"></div>
+
+  <div class="quick-chips" id="quick-chips">
+    <span class="chip">Weight loss</span>
+    <span class="chip">Build muscle</span>
+    <span class="chip">HYROX / Endurance</span>
+    <span class="chip">Pilates</span>
+    <span class="chip">Beginner</span>
+    <span class="chip">Combat sports</span>
+    <span class="chip">Post-natal</span>
+    <span class="chip">Injury rehab</span>
+  </div>
+
+  <div class="ai-input-area">
+    <input id="ai-input" type="text" placeholder="What are your fitness goals?" maxlength="300">
+    <button id="ai-send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ── Trainer knowledge base ──
+  const TRAINERS = [
+    { name:"Fazrul", role:"Fitness Manager & Senior Coach", path:"Fazrul/Fazrul.html", tags:["fat loss","body recomposition","lifestyle","injury prevention","hypertrophy","strength","rehab","pre-natal","post-natal","bodybuilding","biomechanics","functional","pilates","mentor","senior","experienced"] },
+    { name:"Sheril", role:"Senior Coach", path:"Sheril/Sheril.html", tags:["sports performance","body composition","women's health","pre-natal","post-natal","menopause","senior fitness","injury management","stress","mental health","holistic","sports massage","osteopathic","experienced","female"] },
+    { name:"Ryan", role:"Senior Coach", path:"Ryan/Ryan.html", tags:["hyrox","endurance","hybrid training","strength","conditioning","nutrition","biomechanics","post-natal","golf","rugby","running","performance","chef","senior","experienced"] },
+    { name:"Daya", role:"Senior Coach", path:"Daya/Daya.html", tags:["reformer pilates","pilates","body recomposition","hypertrophy","mobility","fat loss","women's health","group training","weight management","female","senior"] },
+    { name:"Joshua", role:"Coach", path:"Joshua/Joshua.html", tags:["bodybuilding","hypertrophy","post-natal","pregnancy","strength","conditioning","fat loss","lifestyle","myofascial release","experienced","9 years"] },
+    { name:"Chips", role:"Coach", path:"Chips/Chips.html", tags:["strength","fat loss","body recomposition","hypertrophy","rehabilitation","bikini","competition","female"] },
+    { name:"Daran", role:"Coach", path:"Daran/Daran.html", tags:["nutrition","muscle","strength","fat loss","body recomposition","habit coaching","trigger point","bodybuilding","supportive","beginner"] },
+    { name:"Haris", role:"Coach", path:"Haris/Haris.html", tags:["strength","natural bodybuilding","flexible dieting","fat loss","hypertrophy","olympic lifting","beginner"] },
+    { name:"Imran", role:"Coach", path:"Imran/Imran.html", tags:["body recomposition","fat loss","hiit","circuit","nutrition","strength","conditioning","bodybuilding","myofascial release","lifestyle"] },
+    { name:"Jomari", role:"Coach", path:"Jomari/Jomari.html", tags:["powerlifting","bodybuilding","strength","conditioning","fat loss","competition","nationals"] },
+    { name:"Kurnia", role:"Coach", path:"Kurnia/Kurnia.html", tags:["functional training","strength","hypertrophy","fun","energetic","female"] },
+    { name:"Gwen", role:"Coach", path:"Gwen/Gwen.html", tags:["hyrox","metabolic conditioning","body recomposition","injury management","rehab","pre-natal","post-natal","program design","assessment","female"] },
+    { name:"Hafiz", role:"Coach", path:"Hafiz/Hafiz.html", tags:["functional training","body transformation","bodybuilding","rehabilitation","knee","shoulder","lower back","injury"] },
+    { name:"Reuben", role:"Coach", path:"Reuben/Reuben.html", tags:["hypertrophy","strength","conditioning","plyometric","fat loss","body recomposition","beginner"] },
+    { name:"Roki", role:"Coach", path:"Roki/Roki.html", tags:["powerlifting","boxing","strength","conditioning","authentic","mindset"] },
+    { name:"Po", role:"Coach", path:"Po/Po.html", tags:["strength","conditioning","fat loss","muscle building","sports specific","rehab","injury prevention","senior fitness","seniors"] },
+    { name:"Mario", role:"Coach", path:"Mario/Mario.html", tags:["fat loss","muscle sculpting","strength","discipline","culture","travel"] },
+  ];
+
+  // ── Testimonials knowledge base ──
+  const TESTIMONIALS = {
+    "Fazrul": [
+      { client: "Marcus T.", quote: "Fazrul completely transformed how I move. After my knee surgery I thought my gym days were over — he proved me wrong." },
+      { client: "Priya S.", quote: "He doesn't just train you, he educates you. I understand my body so much better now." }
+    ],
+    "Sheril": [
+      { client: "Amanda L.", quote: "As a working mum post-baby, Sheril understood exactly what I needed. She's incredibly knowledgeable about women's health." },
+      { client: "Rachel K.", quote: "I was going through menopause and had no idea how to train. Sheril changed everything for me." }
+    ],
+    "Ryan": [
+      { client: "Daniel W.", quote: "Ryan got me HYROX-ready in 12 weeks. His programming is next level — structured, progressive, and actually fun." },
+      { client: "James H.", quote: "Best coach I've had for hybrid training. He understands both endurance and strength equally well." }
+    ],
+    "Daya": [
+      { client: "Sophia C.", quote: "Daya's reformer Pilates sessions are unlike anything I've tried. I lost 8kg and my posture is completely different." },
+      { client: "Mei Lin.", quote: "She makes every session feel personal. I've tried many Pilates instructors — Daya is on another level." }
+    ],
+    "Joshua": [
+      { client: "Kevin P.", quote: "Joshua helped me put on 6kg of lean muscle in 4 months. His knowledge of hypertrophy is exceptional." },
+      { client: "Sarah M.", quote: "After my second pregnancy I was nervous to train. Joshua was so patient and really understood post-natal fitness." }
+    ],
+    "Chips": [
+      { client: "Clara N.", quote: "I competed in my first bikini competition thanks to Chips. She knew exactly how to peak me at the right time." },
+      { client: "Diana F.", quote: "Her approach to fat loss is sustainable. No crash diets — just real, lasting results." }
+    ],
+    "Daran": [
+      { client: "Raymond C.", quote: "Daran made nutrition actually make sense to me. I've tried every diet — his habit-based approach is the only thing that stuck." },
+      { client: "Tom B.", quote: "Super supportive coach. He checks in even outside sessions. That accountability made all the difference." }
+    ],
+    "Haris": [
+      { client: "Alvin G.", quote: "I wanted to learn Olympic lifting and Haris is the real deal. Technique-focused and very patient with beginners." },
+      { client: "Nigel W.", quote: "His flexible dieting approach means I don't feel like I'm on a restrictive plan. Down 10kg and still eating food I love." }
+    ],
+    "Imran": [
+      { client: "Jason L.", quote: "Imran's HIIT circuits are intense but incredibly effective. I've never sweated so much or seen results so fast." },
+      { client: "Alicia T.", quote: "He pushed me past the mental barriers I didn't even know I had. My body composition changed dramatically in 8 weeks." }
+    ],
+    "Jomari": [
+      { client: "Chris V.", quote: "Jomari took me from recreational lifter to competing at nationals. His powerlifting coaching is world-class." },
+      { client: "Benny H.", quote: "Pure strength focus — exactly what I wanted. No fluff, just results." }
+    ],
+    "Kurnia": [
+      { client: "Wendy S.", quote: "Kurnia makes every session so fun. I used to dread going to the gym — now I look forward to it every week." },
+      { client: "Priscilla M.", quote: "Her energy is infectious! I've gotten so much stronger without it ever feeling like a chore." }
+    ],
+    "Gwen": [
+      { client: "Michelle O.", quote: "Gwen prepared me for my first HYROX race and I finished top 10 in my category. Her programming is dialled in." },
+      { client: "Lena C.", quote: "Post-natal training with Gwen was the best decision I made. She knew exactly what my body needed to recover and rebuild." }
+    ],
+    "Hafiz": [
+      { client: "Andy R.", quote: "I had chronic lower back pain for years. Hafiz's rehab-focused training got me pain-free in 3 months." },
+      { client: "Steven K.", quote: "He fixed my knee issue that physiotherapy couldn't fully resolve. Incredible understanding of injury and movement." }
+    ],
+    "Reuben": [
+      { client: "Darren M.", quote: "I'd never stepped foot in a gym before. Reuben made me feel completely at ease from day one." },
+      { client: "Paul T.", quote: "He breaks everything down simply. I understand what I'm doing and why — that's made all the difference." }
+    ],
+    "Roki": [
+      { client: "Faiz A.", quote: "Roki's boxing sessions are next level. He doesn't just teach you to punch — he builds your whole mindset." },
+      { client: "Bernard L.", quote: "I came for powerlifting, stayed for the philosophy. Roki trains you as a complete person." }
+    ],
+    "Po": [
+      { client: "Robert C.", quote: "As a 58-year-old, I was worried about training hard. Po designed a programme that pushed me safely and I feel 10 years younger." },
+      { client: "George N.", quote: "Po has worked with seniors before and it shows. He knows exactly what movements to avoid and which to prioritise." }
+    ],
+    "Mario": [
+      { client: "Vikram S.", quote: "Mario's discipline and consistency is contagious. I've never been more focused on my fitness goals." },
+      { client: "Luke F.", quote: "He sculpted my physique in a way no other trainer managed. Highly recommend for body composition." }
+    ],
+  };
+
+  const SYSTEM_PROMPT = `You are a friendly, knowledgeable fitness concierge for Virgin Active Marina One. Your job is to recommend the best personal trainer(s) from the team based on what the member tells you about their goals, fitness level, preferences, or injuries.
+
+Here is the full trainer roster with their specialities:
+
+${TRAINERS.map(t => `- ${t.name} (${t.role}): ${t.tags.join(', ')}`).join('\n')}
+
+Here are real client testimonials for each trainer. When you recommend a trainer, include ONE relevant testimonial to give the member social proof. Format it as: [TESTIMONIAL:TrainerName:ClientName:Quote]
+
+${Object.entries(TESTIMONIALS).map(([name, tests]) =>
+  tests.map(t => `- ${name}: "${t.quote}" — ${t.client}`).join('\n')
+).join('\n')}
+
+Guidelines:
+- Recommend 1–3 trainers maximum. Be specific about WHY each one suits the member's needs.
+- Keep replies concise and warm — 3–5 sentences max per recommendation.
+- Use the trainer's name in bold when mentioning them (wrap in **name**).
+- After each trainer recommendation, include ONE testimonial using this exact format on its own line: [TESTIMONIAL:TrainerName:ClientName:Quote text here]
+- Choose the testimonial most relevant to the member's stated goals.
+- If the member mentions injury, rehab, or post-natal, always include relevant specialists.
+- If they want HYROX or endurance, always include Ryan and/or Gwen.
+- If they want Pilates, always recommend Daya.
+- If they want boxing or combat sports, always recommend Roki.
+- If they're a complete beginner, lean toward Reuben, Daran, Aly, or Haris.
+- End every reply by asking if they'd like more details or have other preferences.
+- Do NOT mention pricing. Do NOT use markdown headers. Speak conversationally.`;
+
+  const history = [];
+  let isOpen = false;
+
+  // ── DOM refs ──
+  const btn      = document.getElementById('ai-chat-btn');
+  const win      = document.getElementById('ai-chat-window');
+  const closeBtn = document.getElementById('ai-close');
+  const messages = document.getElementById('ai-messages');
+  const input    = document.getElementById('ai-input');
+  const sendBtn  = document.getElementById('ai-send');
+  const chips    = document.getElementById('quick-chips');
+
+  // ── Toggle window ──
+  // ── Notice bubble dismiss ──
+  const bubble = document.getElementById('ai-notice-bubble');
+  function dismissBubble() {
+    bubble.classList.add('hide');
+    setTimeout(() => bubble.style.display = 'none', 300);
+  }
+  bubble.addEventListener('click', () => { dismissBubble(); toggleChat(true); });
+
+  btn.addEventListener('click', () => { dismissBubble(); toggleChat(true); });
+  closeBtn.addEventListener('click', () => toggleChat(false));
+
+  function toggleChat(open) {
+    isOpen = open;
+    win.classList.toggle('open', open);
+    if (open && messages.children.length === 0) {
+      addMessage('ai', "Hi! 👋 I'm here to help you find the perfect coach at Virgin Active Marina One. Tell me about your fitness goals, any injuries, or what kind of training you're looking for — and I'll match you with the right trainer.");
+    }
+  }
+
+  // ── Quick chips ──
+  chips.addEventListener('click', (e) => {
+    if (e.target.classList.contains('chip')) {
+      input.value = e.target.textContent;
+      chips.style.display = 'none';
+      send();
+    }
+  });
+
+  // ── Send on enter ──
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  sendBtn.addEventListener('click', send);
+
+  async function send() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    chips.style.display = 'none';
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+
+    // Show typing indicator
+    const typing = addTyping();
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          messages: history
+        })
+      });
+
+      const data = await res.json();
+      typing.remove();
+
+      let reply = '';
+      if (data.content && data.content[0]) {
+        reply = data.content[0].text;
+      } else {
+        reply = "Sorry, I couldn't get a response right now. Please ask a staff member at the front desk for help!";
+      }
+
+      // Bold **name** → <strong>
+      reply = reply.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+      // Turn trainer names into clickable links
+      TRAINERS.forEach(t => {
+        const regex = new RegExp(`<strong>${t.name}</strong>`, 'g');
+        reply = reply.replace(regex, `<strong><a href="${t.path}">${t.name}</a></strong>`);
+      });
+
+      // Parse [TESTIMONIAL:Name:Client:Quote] tokens → styled cards
+      reply = reply.replace(/\[TESTIMONIAL:([^:]+):([^:]+):([^\]]+)\]/g, (_, name, client, quote) => {
+        return `<div class="testimonial-card"><span class="t-quote">"${quote}"</span><div class="t-client">— ${client}</div></div>`;
+      });
+
+      history.push({ role: 'assistant', content: data.content[0]?.text || reply });
+      addMessage('ai', reply, true);
+
+    } catch(err) {
+      typing.remove();
+      addMessage('ai', "I'm having trouble connecting right now. Please speak with our team at the front desk and they'll be happy to match you with the right coach! 💪");
+    }
+  }
+
+  function addMessage(from, text, isHtml = false) {
+    const div = document.createElement('div');
+    div.className = `msg msg-${from}`;
+    if (isHtml) div.innerHTML = text;
+    else div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  function addTyping() {
+    const div = document.createElement('div');
+    div.className = 'typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+})();
 </script>
 </body>
 </html>
