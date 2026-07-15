@@ -24,17 +24,15 @@
     .hero-image{position:relative;overflow:hidden;}
     .hero-image img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
     .hero-image-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 55%,var(--white) 100%);}
-    .achievement-ribbon{position:absolute;bottom:2.5rem;left:2rem;background:var(--red);color:#fff;padding:0.6rem 1.25rem;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;border-radius:4px;animation:fadeUp 0.8s 0.6s ease both;}
     .hero-content{display:flex;flex-direction:column;justify-content:center;padding:4rem 3.5rem 4rem 3rem;}
     .hero-tag{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:1.25rem;animation:fadeUp 0.7s ease both;}
     .hero-tag::before{content:"";width:24px;height:2px;background:var(--red);}
     .hero-name{font-family:"Bebas Neue",sans-serif;font-size:clamp(4rem,8vw,7rem);line-height:0.88;letter-spacing:0.02em;color:var(--black);animation:fadeUp 0.7s 0.08s ease both;}
-    .hero-name em{font-family:"DM Serif Display",serif;font-style:italic;color:var(--red);display:block;}
     .hero-role{margin-top:1rem;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);font-weight:500;animation:fadeUp 0.7s 0.14s ease both;}
     .hero-divider{width:48px;height:2px;background:var(--red);margin:1.75rem 0;animation:fadeUp 0.7s 0.2s ease both;}
     .hero-about{font-size:1rem;line-height:1.78;color:rgba(0,0,0,0.58);max-width:46ch;animation:fadeUp 0.7s 0.25s ease both;}
     .hero-about strong{color:var(--black);font-weight:600;}
-    .hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);animation:fadeUp 0.7s 0.3s ease both;flex-wrap:wrap;}
+    .hero-stats{display:flex;flex-wrap:nowrap;gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);animation:fadeUp 0.7s 0.3s ease both;}.stat-item{flex:1;min-width:0;}
     .stat-number{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:0.04em;color:var(--red);line-height:1;}
     .stat-label{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:0.3rem;line-height:1.4;}
     .content{max-width:1100px;margin:0 auto;padding:5rem 2rem 6rem;}
@@ -81,28 +79,19 @@
     .section-title span{font-family:"DM Serif Display",serif;font-style:italic;color:var(--red);}
     .divider{width:48px;height:2px;background:var(--red);margin:1.25rem auto 0;}
     .testimonials-placeholder{text-align:center;padding:3.5rem 2rem;background:#fff;border:1px dashed rgba(0,0,0,0.1);border-radius:12px;color:var(--muted);font-size:0.9rem;font-style:italic;}
-    .testimonial-text{font-size:1rem;line-height:1.7;color:#444;margin-bottom:1rem;font-style:italic;}
-    .client-name{font-weight:700;color:var(--red);margin-top:0.5rem;font-size:0.9rem;}
-    .carousel-item{display:none;animation:fadeUp 0.5s ease;padding:1rem 0;}
-    .carousel-item.active{display:block;}
-    .carousel-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:1.5rem;}
-    .nav-btn{cursor:pointer;font-size:20px;padding:6px 12px;color:var(--red);font-weight:bold;border-radius:8px;background:rgba(255,255,255,0.9);border:1px solid rgba(232,25,44,0.2);transition:background 0.25s,color 0.25s;}
-    .nav-btn:hover{background:var(--red);color:#fff;}
-    .dots{display:flex;align-items:center;gap:8px;}
-    .dot{height:10px;width:10px;background:#ccc;border-radius:50%;cursor:pointer;transition:background 0.25s;}
-    .dot.active{background:var(--red);}
     footer{padding:2rem 2.5rem;background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
     .footer-logo{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;letter-spacing:0.15em;color:var(--red);opacity:0.5;}
     footer p{font-size:0.72rem;color:var(--muted);}
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
     @media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;}.hero-image{height:65vw;max-height:500px;}.hero-image-overlay{background:linear-gradient(to bottom,transparent 55%,var(--white) 100%);}.hero-content{padding:2.5rem 1.5rem 3rem;}.two-col{grid-template-columns:1fr;}}
-    @media(max-width:600px){nav{padding:0.9rem 1.25rem;}.form-row{flex-direction:column;}.skills-grid{grid-template-columns:1fr 1fr;}footer{flex-direction:column;text-align:center;}}
+    @media(max-width:600px){nav{padding:0.9rem 1.25rem;}.form-row{flex-direction:column;}.skills-grid{grid-template-columns:1fr 1fr;}.hero-stats{gap:1rem;}.stat-number{font-size:1.5rem;}.stat-label{font-size:0.6rem;}footer{flex-direction:column;text-align:center;}}
   </style>
 </head>
 <body>
+
 <nav id="mainNav">
   <div class="nav-logo-text">VIRGIN ACTIVE</div>
-  <a href="../Main.html#trainers" class="nav-back">
+  <a href="../index.html#trainers" class="nav-back">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     Back to Coaches
   </a>
@@ -110,17 +99,29 @@
 
 <section class="hero">
   <div class="hero-image">
-    <img src="Chinna.jpeg" alt="Imran">
+    <img src="Chinna.jpeg" alt="Chinna" onerror="this.src='https://placehold.co/800x1000/f0f0f0/999?text=Chinna'">
     <div class="hero-image-overlay"></div>
-    
   </div>
   <div class="hero-content">
-    <div class="hero-tag">Virgin Active · Coach</div>
+    <div class="hero-tag">Virgin Active &middot; Coach</div>
     <h1 class="hero-name">Chinna</h1>
     <div class="hero-role">Coach</div>
     <div class="hero-divider"></div>
-    <p class="hero-about"><strong> Spontaneous, energetic,<Strong></Strong> and fully dedicated to helping people unlock their potential. Outside the gym: travelling, experimenting in the kitchen, and hunting down the best coffee spots.</p>
-    <div class="hero-stats"><div class="stat-item"><div class="stat-number">3+</div><div class="stat-label">Years Coaching</div></div><div class="stat-item"><div class="stat-number">3+</div><div class="stat-label">Training Specialities</div></div></div>
+    <p class="hero-about"><strong>Former rugby player, forever hungry.</strong> I spend most of my week between the gym floor and property viewings, so I know a thing or two about busy schedules. When I'm not training, you'll find me hunting down the best makan spots in Singapore or filming whatever I ate. I love my food and my kopi strong.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">Rugby</div>
+        <div class="stat-label">Former Player</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2+</div>
+        <div class="stat-label">Training Specialities</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">NCSF</div>
+        <div class="stat-label">Certified Personal Trainer</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -129,18 +130,27 @@
     <button class="tab-btn active" onclick="switchTab('skills',this)">Skills</button>
     <button class="tab-btn" onclick="switchTab('certs',this)">Certifications</button>
   </div>
+
   <div class="tab-panel active" id="panel-skills">
     <div class="skills-grid">
-      <div class="skill-chip">Skills - Coming Soon</div>
+      <div class="skill-chip">Strength Training</div>
+      <div class="skill-chip">Hypertrophy</div>
+    </div>
   </div>
+
   <div class="tab-panel" id="panel-certs">
-    <div class="cert-item"><div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>NCSF Certified Personal Trainer</div>
+    <div class="cert-item">
+      <div class="cert-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      </div>
+      NCSF Certified Personal Trainer
+    </div>
   </div>
+
   <div class="two-col">
     <div class="philosophy-card">
       <div class="card-label">Training Philosophy</div>
-      <div class="philosophy-quote">"You deserve to see what happens when all your hard work pays off."</div>
-      
+      <div class="philosophy-quote">"Some days I don't feel like it either. I show up anyway. That's the whole secret."</div>
     </div>
     <div class="contact-card">
       <div class="card-label">Get In Touch</div>
@@ -168,7 +178,7 @@
 
 <footer>
   <div class="footer-logo">VIRGIN ACTIVE</div>
-  <p>© 2025 Virgin Active. All rights reserved.</p>
+  <p>&copy; 2025 Virgin Active. All rights reserved.</p>
 </footer>
 
 <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
@@ -185,8 +195,6 @@
     qrContainer.innerHTML="";
     new QRCode(qrContainer,{text:mailtoLink,width:200,height:200,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
   }
-  
-  window.onload=function(){};
 </script>
 </body>
 </html>
