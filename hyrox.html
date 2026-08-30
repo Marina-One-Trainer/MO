@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marina One — HYROX Performance Training</title>
+<meta name="description" content="HYROX-specific coaching, race packages, and station-by-station training at Marina One.">
+
+<!-- Tailwind CDN + brand config -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:     '#0C0D0F',   // primary background — poured concrete
+          panel:   '#18191C',   // card / raised surface
+          steel:   '#3A3D42',   // hairlines, borders
+          signal:  '#FFDD57',   // race-flag accent — light yellow
+          chalk:   '#F4F1EA',   // primary text — gym chalk
+          fog:     '#9A9DA3',   // secondary text
+        },
+        fontFamily: {
+          display: ['"Bebas Neue"', 'sans-serif'],
+          body: ['"Inter"', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+        },
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- EmailJS — sends the contact form straight from the browser, no backend needed -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<style>
+  /* ============ BASE ============ */
+  html { scroll-behavior: smooth; }
+  body { background:#0C0D0F; font-family:'Inter',sans-serif; }
+  ::selection { background:#FFDD57; color:#0C0D0F; }
+
+  /* ============ SIGNATURE: hazard rail ============ */
+  .hazard-rail{
+    height:6px;
+    background: repeating-linear-gradient(-45deg, #FFDD57 0 14px, #0C0D0F 14px 28px);
+  }
+
+  /* ============ STOPWATCH DISPLAY ============ */
+  .clock-face{ font-variant-numeric: tabular-nums; letter-spacing:0.02em; }
+
+  /* ============ STATION STRIP ============ */
+  .station-strip{ scrollbar-width:none; }
+  .station-strip::-webkit-scrollbar{ display:none; }
+  .station-card{ scroll-snap-align:start; }
+
+  /* ============ COACH CAROUSEL ============ */
+  .coach-track{ transition: transform 0.5s cubic-bezier(.65,0,.35,1); touch-action: pan-y; }
+  .dot{ width:7px; height:7px; border-radius:999px; background:#3A3D42; transition:all .25s ease; cursor:pointer; }
+  .dot.active{ width:22px; background:#FFDD57; }
+
+  /* ============ PRICING CAROUSEL ============ */
+  .price-track{ transition: transform 0.5s cubic-bezier(.65,0,.35,1); touch-action: pan-y; }
+
+  /* ============ MISC ============ */
+  .num-badge{ font-family:'IBM Plex Mono',monospace; }
+  .form-input, .form-select, .form-textarea{
+    width:100%; background:#0C0D0F; border:1px solid #3A3D42; border-radius:6px;
+    padding:11px 13px; color:#F4F1EA; font-size:14px; outline:none; transition:border-color .2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus{ border-color:#FFDD57; }
+  .form-textarea{ resize:vertical; min-height:96px; }
+  .btn-signal{ background:#FFDD57; color:#0C0D0F; font-weight:700; transition:background .2s, transform .15s; }
+  .btn-signal:hover{ background:#F0C929; }
+  .btn-signal:active{ transform:scale(0.98); }
+  .fade-up{ animation: fadeUp .6s ease both; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .coach-track{ transition:none; }
+    .fade-up{ animation:none; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-chalk font-body">
+
+  <!-- ================= HEADER ================= -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-ink/90 backdrop-blur border-b border-steel">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3">
+      <div class="flex items-baseline gap-2">
+        <span class="font-display text-2xl tracking-wide leading-none">MARINA ONE</span>
+        <span class="font-mono text-[10px] text-signal border border-signal px-1.5 py-0.5 rounded">HYROX</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-7 font-mono text-[11px] uppercase tracking-widest text-fog">
+        <a href="#stations" class="hover:text-chalk transition-colors">Stations</a>
+        <a href="#coaches" class="hover:text-chalk transition-colors">Coaches</a>
+        <a href="#pricing" class="hover:text-chalk transition-colors">Pricing</a>
+        <a href="#contact" class="hover:text-chalk transition-colors">Contact</a>
+      </nav>
+      <a href="#contact" class="hidden md:inline-block btn-signal text-[11px] uppercase tracking-widest px-4 py-2 rounded">Book a Session</a>
+      <button id="menuBtn" class="md:hidden text-chalk" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-steel bg-ink font-mono text-xs uppercase tracking-widest text-fog">
+      <a href="#stations" class="block px-5 py-3 border-b border-steel">Stations</a>
+      <a href="#coaches" class="block px-5 py-3 border-b border-steel">Coaches</a>
+      <a href="#pricing" class="block px-5 py-3 border-b border-steel">Pricing</a>
+      <a href="#contact" class="block px-5 py-3 text-signal">Book a Session</a>
+    </div>
+  </header>
+  <div class="hazard-rail mt-[57px]"></div>
+
+  <!-- ================= HERO ================= -->
+  <section class="relative overflow-hidden px-5 pt-16 pb-14 max-w-6xl mx-auto">
+    <p class="font-mono text-signal text-xs tracking-[0.35em] uppercase mb-4">Marina One Fitness &mdash; Race Division</p>
+    <h1 class="font-display text-[15vw] sm:text-7xl md:text-8xl leading-[0.92] uppercase mb-6">
+      Train the race.<br><span class="text-signal">Beat the clock.</span>
+    </h1>
+    <p class="text-fog text-base md:text-lg max-w-xl mb-8 leading-relaxed">
+      Purpose-built HYROX coaching — eight stations, one finish line. Our coaches program your running splits and your strength work as a single race engine, not two separate plans.
+    </p>
+
+    <div class="flex flex-wrap gap-3 mt-2">
+      <a href="#pricing" class="btn-signal px-6 py-3 rounded font-mono text-xs uppercase tracking-widest">See Pricing</a>
+      <a href="#coaches" class="border border-steel hover:border-chalk transition-colors px-6 py-3 rounded font-mono text-xs uppercase tracking-widest text-chalk">Meet the Coaches</a>
+    </div>
+  </section>
+
+  <!-- ================= STATIONS ================= -->
+  <section id="stations" class="border-t border-steel py-14">
+    <div class="max-w-6xl mx-auto px-5 mb-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="font-mono text-signal text-xs tracking-[0.35em] uppercase mb-2">The Course</p>
+        <h2 class="font-display text-4xl md:text-5xl uppercase">Eight Stations. In Order.</h2>
+      </div>
+      <p class="hidden md:block text-fog text-sm max-w-xs">Every block we program maps back to one of these — nothing on the whiteboard is generic.</p>
+    </div>
+    <div id="stationStrip" class="station-strip flex gap-4 overflow-x-auto px-5 pb-2" style="scroll-snap-type:x mandatory;">
+      <!-- injected by JS -->
+    </div>
+  </section>
+
+  <!-- ================= COACHES CAROUSEL ================= -->
+  <section id="coaches" class="border-t border-steel py-14 bg-panel/40">
+    <div class="max-w-6xl mx-auto px-5">
+      <p class="font-mono text-signal text-xs tracking-[0.35em] uppercase mb-2">Your Corner</p>
+      <h2 class="font-display text-4xl md:text-5xl uppercase mb-8">HYROX Coaches</h2>
+
+      <div class="relative">
+        <div class="overflow-hidden">
+          <div id="coachTrack" class="coach-track flex"></div>
+        </div>
+
+        <button id="coachPrev" aria-label="Previous coach" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button id="coachNext" aria-label="Next coach" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div id="coachDots" class="flex justify-center gap-2 mt-6"></div>
+    </div>
+  </section>
+
+  <!-- ================= PRICING ================= -->
+  <section id="pricing" class="border-t border-steel py-14">
+    <div class="max-w-6xl mx-auto px-5">
+      <p class="font-mono text-signal text-xs tracking-[0.35em] uppercase mb-2">Race Packages</p>
+      <h2 class="font-display text-4xl md:text-5xl uppercase mb-8">Pick Your Distance</h2>
+
+      <div class="relative">
+        <div class="overflow-hidden">
+          <div id="priceTrack" class="price-track flex"></div>
+        </div>
+
+        <button id="pricePrev" aria-label="Previous package" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button id="priceNext" aria-label="Next package" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div id="priceDots" class="flex justify-center gap-2 mt-6"></div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="border-t border-steel py-14 bg-panel/40">
+    <div class="max-w-5xl mx-auto px-5 grid md:grid-cols-5 gap-8">
+
+      <!-- form -->
+      <div class="md:col-span-3 bg-panel border border-steel rounded-xl p-6 md:p-8">
+        <p class="font-mono text-signal text-xs tracking-[0.35em] uppercase mb-2">Start Your Race</p>
+        <h2 class="font-display text-3xl uppercase mb-1">Book a Consult</h2>
+        <p class="text-fog text-sm mb-6 leading-relaxed">Tell us your target race date and current fitness — we'll match you to a coach and package.</p>
+
+        <div id="thankyou" class="hidden text-center py-10">
+          <div class="text-4xl mb-3">🏁</div>
+          <div class="font-display text-2xl uppercase mb-1">Message Received</div>
+          <p id="thankyouDetail" class="text-fog text-sm">A coach will reach out within one business day.</p>
+        </div>
+
+        <form id="contactForm" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Full Name</label>
+              <input type="text" name="name" required class="form-input">
+            </div>
+            <div>
+              <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Email</label>
+              <input type="email" name="email" required class="form-input">
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Phone</label>
+              <input type="tel" name="phone" required class="form-input">
+            </div>
+            <div>
+              <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Package</label>
+              <select name="package" id="packageSelect" class="form-select">
+                <option value="">Not sure yet</option>
+                <option value="Intro">Intro</option>
+                <option value="Hyrox Go">Hyrox Go</option>
+                <option value="Hyrox Performace">Hyrox Performace</option>
+                <option value="Go Buddy">Go Buddy</option>
+                <option value="Performace Buddy">Performace Buddy</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Preferred Trainer</label>
+            <select name="trainer" id="trainerSelect" class="form-select">
+              <option value="">No preference — assign me anyone</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-mono text-[10px] uppercase tracking-widest text-fog mb-1.5">Goals / Target Race Date</label>
+            <textarea name="goals" class="form-textarea" placeholder="e.g. First HYROX in April, currently running 2x a week..."></textarea>
+          </div>
+          <p id="formError" class="hidden text-signal text-xs font-mono"></p>
+          <button id="submitBtn" type="submit" class="btn-signal w-full py-3 rounded font-mono text-xs uppercase tracking-widest">Send Message</button>
+        </form>
+      </div>
+
+      <!-- contact info -->
+      <div class="md:col-span-2 flex flex-col gap-4">
+        <div class="bg-panel border border-steel rounded-xl p-6">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-signal mb-3">Location</p>
+          <p class="text-chalk text-sm leading-relaxed">Virgin Active Marina One<br>7 Straits View, #02-01, The Heart at Marina One, Singapore 018936</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-steel py-8">
+    <div class="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-baseline gap-2">
+        <span class="font-display text-lg tracking-wide">MARINA ONE</span>
+        <span class="font-mono text-[9px] text-signal">HYROX DIVISION</span>
+      </div>
+      <p class="font-mono text-[10px] text-fog uppercase tracking-widest">&copy; 2026 Marina One Fitness. All rights reserved.</p>
+    </div>
+  </footer>
+
+<script>
+/* ======================================================================
+   EMAILJS CONFIG — fill these in from your EmailJS account
+   (emailjs.com → Email Services / Email Templates / Account → API Keys)
+   ====================================================================== */
+const EMAILJS_PUBLIC_KEY  = 'ZuT4bqTVYOaswzJ7m';   // Account → General
+const EMAILJS_SERVICE_ID  = 'service_8t8fnfw';   // Email Services
+const EMAILJS_TEMPLATE_ID = 'template_fsb922e';  // Email Templates
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+/* ======================================================================
+   DATA
+   ====================================================================== */
+const STATIONS = [
+  { n:'01', name:'SkiErg', desc:'1000m — full-body pulling power to open the race.' },
+  { n:'02', name:'Sled Push', desc:'50m — max-effort ground force, legs and lockout.' },
+  { n:'03', name:'Sled Pull', desc:'50m — posterior chain under load, controlled pace.' },
+  { n:'04', name:'Burpee Broad Jumps', desc:'80m — explosive full-body output, high heart rate.' },
+  { n:'05', name:'Rowing', desc:'1000m — pacing discipline, mid-race reset.' },
+  { n:'06', name:'Farmers Carry', desc:'200m — grip and core under fatigue.' },
+  { n:'07', name:'Sandbag Lunges', desc:'100m — single-leg strength, late-race legs.' },
+  { n:'08', name:'Wall Balls', desc:'75/100 reps — shoulder endurance to the finish.' },
+];
+
+// 👉 Add each trainer's real email address below — used to route the contact
+//    form to whichever coach the member selects (or is randomly assigned).
+const COACHES = [
+  {
+    name:'Fazrul', role:'Fitness Manager', cert:'HYROX Certified L1',
+    img:'Fazrul/Fazrul.Jpg', email:'Faz.Rozali@virginactive.com.sg'
+  },
+  {
+    name:'Sheril', role:'Senior Coach', cert:'HYROX Certified L1',
+    img:'Sheril/Sheril.jpeg', email:'sheril.Natasha@Virginactive.com.sg'
+  },
+  {
+    name:'Ryan', role:'Senoir Coach', cert:'HYROX Certified L1',
+    img:'Ryan/Ryan.jpg', email:'ryan.Tai@Virginactive.com.sg'
+  },
+  {
+    name:'Gwen', role:'Coach', cert:'HYROX Certified L1',
+    img:'Gwen/Gwen.jpeg', email:'gwen.kua@Virginactive.com.sg'
+  },
+  {
+    name:'Roki',role:'Coach', cert:'Hyrox Certified L1',
+    img:'Roki/Roki.jpg', email:'roki.tan@Virginactive.com.sg'
+  },
+  {
+    name:'Jomari',role:'Coach', cert:'Hyrox Certified L1',
+    img:'Jomari/Jomari.Jpeg', email:'jomari.ciel@Virginactive.com.sg'
+  }
+];
+
+const PACKAGES = [
+  {
+    name:'Intro', price:'$500', sessions:'3 Sessions', validity:'1 Month',
+    features:['Movement + station screening','Personalised race blueprint','1-on-1 technique session']
+  },
+  {
+    name:'Hyrox Go', price:'$1,800', sessions:'12 Sessions', validity:'4 Months',
+    features:['Full 8-station programming','Weekly pacing review','Race-week taper plan','Nutrition check-ins']
+  },
+  {
+    name:'Hyrox Performance', price:'$3,400', sessions:'24 Sessions', validity:'6 Months',
+    features:['Everything in Race Ready','Bi-weekly coach 1-on-1s','Race-day pacing strategy','Priority scheduling']
+  },
+  {
+    name:'Go Buddy', price:'$2,400', sessions:'24 Sessions', validity:'4 Months',
+    features:['Everything in Race Ready','Bi-weekly coach 2-on-1s','Race-day pacing strategy','Priority scheduling']
+  },
+  {
+    name:'Performace Buddy', price:'$4,500', sessions:'24 Sessions', validity:'6 Months',
+    features:['Everything in Race Ready','Bi-weekly coach 2-on-1s','Race-day pacing strategy','Priority scheduling']
+  },
+];
+
+/* ======================================================================
+   MOBILE MENU
+   ====================================================================== */
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('hidden');
+}));
+
+/* ======================================================================
+   STATION STRIP — render
+   ====================================================================== */
+document.getElementById('stationStrip').innerHTML = STATIONS.map(s => `
+  <div class="station-card flex-shrink-0 w-56 bg-panel border border-steel rounded-lg p-5">
+    <div class="num-badge text-signal text-xs mb-3">${s.n} / 08</div>
+    <div class="font-display text-2xl uppercase mb-2 leading-none">${s.name}</div>
+    <p class="text-fog text-xs leading-relaxed">${s.desc}</p>
+  </div>
+`).join('');
+
+/* ======================================================================
+   COACH CAROUSEL
+   ====================================================================== */
+const track = document.getElementById('coachTrack');
+const dotsWrap = document.getElementById('coachDots');
+let coachIndex = 0;
+let perView = 1;
+
+function coachCardHTML(c){
+  return `
+  <div class="coach-slide flex-shrink-0 px-2" style="width:${100/perView}%">
+    <div class="bg-panel border border-steel rounded-xl overflow-hidden h-full">
+      <div class="aspect-[4/3] overflow-hidden">
+        <img src="${c.img}" alt="${c.name}" class="w-full h-full object-cover object-top">
+      </div>
+      <div class="p-5">
+        <div class="font-mono text-[10px] uppercase tracking-widest text-signal mb-1">${c.cert}</div>
+        <div class="font-display text-2xl uppercase leading-none mb-1">${c.name}</div>
+        <div class="text-fog text-xs mb-3">${c.role}</div>
+        <p class="text-chalk text-sm leading-relaxed">${c.bio}</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+function setPerView(){
+  perView = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+}
+
+function renderCoaches(){
+  setPerView();
+  track.innerHTML = COACHES.map(coachCardHTML).join('');
+  const maxIndex = Math.max(0, COACHES.length - perView);
+  coachIndex = Math.min(coachIndex, maxIndex);
+  renderDots(maxIndex);
+  positionTrack();
+}
+
+function renderDots(maxIndex){
+  dotsWrap.innerHTML = '';
+  for (let i = 0; i <= maxIndex; i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === coachIndex ? ' active' : '');
+    d.addEventListener('click', () => { coachIndex = i; positionTrack(); refreshDots(); });
+    dotsWrap.appendChild(d);
+  }
+}
+function refreshDots(){
+  [...dotsWrap.children].forEach((d,i) => d.classList.toggle('active', i === coachIndex));
+}
+function positionTrack(){
+  track.style.transform = `translateX(-${coachIndex * (100/perView)}%)`;
+}
+
+document.getElementById('coachPrev').addEventListener('click', () => {
+  coachIndex = Math.max(0, coachIndex - 1);
+  positionTrack(); refreshDots();
+});
+document.getElementById('coachNext').addEventListener('click', () => {
+  const maxIndex = Math.max(0, COACHES.length - perView);
+  coachIndex = Math.min(maxIndex, coachIndex + 1);
+  positionTrack(); refreshDots();
+});
+
+// touch swipe
+let touchStartX = null;
+track.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+track.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const maxIndex = Math.max(0, COACHES.length - perView);
+  if (dx < -40) coachIndex = Math.min(maxIndex, coachIndex + 1);
+  else if (dx > 40) coachIndex = Math.max(0, coachIndex - 1);
+  positionTrack(); refreshDots();
+  touchStartX = null;
+});
+
+window.addEventListener('resize', renderCoaches);
+renderCoaches();
+
+// populate the "Preferred Trainer" field in the contact form from the same roster
+const trainerSelect = document.getElementById('trainerSelect');
+COACHES.forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c.name;
+  opt.textContent = `${c.name} — ${c.role}`;
+  trainerSelect.appendChild(opt);
+});
+
+/* ======================================================================
+   PRICING CAROUSEL
+   ====================================================================== */
+const priceTrack = document.getElementById('priceTrack');
+const priceDotsWrap = document.getElementById('priceDots');
+let priceIndex = 0;
+let pricePerView = 1;
+
+function priceCardHTML(p){
+  return `
+  <div class="price-slide flex-shrink-0 px-2" style="width:${100/pricePerView}%">
+    <div class="relative bg-panel border ${p.featured ? 'border-signal' : 'border-steel'} rounded-xl overflow-hidden flex flex-col h-full">
+      ${p.featured ? `<div class="absolute top-0 right-0 bg-signal text-ink font-mono text-[10px] uppercase tracking-widest px-3 py-1 rounded-bl">${p.tag}</div>` : ''}
+      <div class="p-6 border-b border-steel">
+        <div class="font-mono text-[10px] uppercase tracking-widest ${p.featured ? 'text-signal' : 'text-fog'} mb-1">${p.featured ? '' : (p.tag || '')}</div>
+        <div class="font-display text-3xl uppercase">${p.name}</div>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="mb-5">
+          <span class="font-display text-4xl">${p.price}</span>
+        </div>
+        <div class="flex gap-4 font-mono text-[11px] text-fog mb-5">
+          <span>${p.sessions}</span><span>&bull;</span><span>${p.validity}</span>
+        </div>
+        <ul class="space-y-2.5 mb-6 flex-1">
+          ${p.features.map(f => `<li class="flex items-start gap-2 text-sm text-chalk"><span class="text-signal mt-0.5">&#10003;</span><span>${f}</span></li>`).join('')}
+        </ul>
+        <button onclick="selectPackage('${p.name}')" class="w-full ${p.featured ? 'btn-signal' : 'border border-steel hover:border-signal text-chalk'} rounded py-2.5 font-mono text-xs uppercase tracking-widest transition-colors">Choose ${p.name}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function setPricePerView(){
+  pricePerView = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+}
+
+function renderPricing(){
+  setPricePerView();
+  priceTrack.innerHTML = PACKAGES.map(priceCardHTML).join('');
+  const maxIndex = Math.max(0, PACKAGES.length - pricePerView);
+  priceIndex = Math.min(priceIndex, maxIndex);
+  renderPriceDots(maxIndex);
+  positionPriceTrack();
+}
+
+function renderPriceDots(maxIndex){
+  priceDotsWrap.innerHTML = '';
+  for (let i = 0; i <= maxIndex; i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === priceIndex ? ' active' : '');
+    d.addEventListener('click', () => { priceIndex = i; positionPriceTrack(); refreshPriceDots(); });
+    priceDotsWrap.appendChild(d);
+  }
+}
+function refreshPriceDots(){
+  [...priceDotsWrap.children].forEach((d,i) => d.classList.toggle('active', i === priceIndex));
+}
+function positionPriceTrack(){
+  priceTrack.style.transform = `translateX(-${priceIndex * (100/pricePerView)}%)`;
+}
+
+document.getElementById('pricePrev').addEventListener('click', () => {
+  priceIndex = Math.max(0, priceIndex - 1);
+  positionPriceTrack(); refreshPriceDots();
+});
+document.getElementById('priceNext').addEventListener('click', () => {
+  const maxIndex = Math.max(0, PACKAGES.length - pricePerView);
+  priceIndex = Math.min(maxIndex, priceIndex + 1);
+  positionPriceTrack(); refreshPriceDots();
+});
+
+// touch swipe
+let priceTouchStartX = null;
+priceTrack.addEventListener('touchstart', e => priceTouchStartX = e.touches[0].clientX, {passive:true});
+priceTrack.addEventListener('touchend', e => {
+  if (priceTouchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - priceTouchStartX;
+  const maxIndex = Math.max(0, PACKAGES.length - pricePerView);
+  if (dx < -40) priceIndex = Math.min(maxIndex, priceIndex + 1);
+  else if (dx > 40) priceIndex = Math.max(0, priceIndex - 1);
+  positionPriceTrack(); refreshPriceDots();
+  priceTouchStartX = null;
+});
+
+window.addEventListener('resize', renderPricing);
+renderPricing();
+
+function selectPackage(name){
+  document.getElementById('packageSelect').value = name;
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
+
+/* ======================================================================
+   CONTACT FORM
+   ====================================================================== */
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = this;
+  const data = new FormData(form);
+  const errorEl = document.getElementById('formError');
+  const submitBtn = document.getElementById('submitBtn');
+
+  if (!data.get('name') || !data.get('email') || !data.get('phone')){
+    errorEl.textContent = 'Please fill in your name, email, and phone.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+  errorEl.classList.add('hidden');
+
+  // if the member picked a trainer, honor it — otherwise assign one at random
+  let assignedTrainer = data.get('trainer');
+  if (!assignedTrainer){
+    assignedTrainer = COACHES[Math.floor(Math.random() * COACHES.length)].name;
+  }
+  const trainerRecord = COACHES.find(c => c.name === assignedTrainer);
+  const trainerEmail = trainerRecord ? trainerRecord.email : '';
+
+  const templateParams = {
+    to_email: trainerEmail,          // the selected/assigned trainer's inbox
+    trainer_name: assignedTrainer,
+    from_name: data.get('name'),
+    from_email: data.get('email'),
+    phone: data.get('phone'),
+    package: data.get('package') || 'Not sure yet',
+    goals: data.get('goals') || '—',
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    .then(() => {
+      document.getElementById('thankyouDetail').textContent =
+        `You're paired with Coach ${assignedTrainer}. They'll reach out within one business day.`;
+      form.classList.add('hidden');
+      document.getElementById('thankyou').classList.remove('hidden');
+    })
+    .catch((err) => {
+      console.error('EmailJS error:', err);
+      errorEl.textContent = 'Something went wrong sending your message — please try again.';
+      errorEl.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    });
+});
+</script>
+</body>
+</html>
