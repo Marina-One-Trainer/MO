@@ -236,7 +236,7 @@
                 <option value="Hyrox Go">Hyrox Go</option>
                 <option value="Hyrox Performace">Hyrox Performace</option>
                 <option value="Go Buddy">Go Buddy</option>
-                <option value="Performace Buddy">Performace Buddy</option>
+                <option value="Performace Buddy">Performance Buddy</option>
               </select>
             </div>
           </div>
@@ -297,7 +297,7 @@ const STATIONS = [
   { n:'05', name:'Rowing', desc:'1000m — pacing discipline, mid-race reset.' },
   { n:'06', name:'Farmers Carry', desc:'200m — grip and core under fatigue.' },
   { n:'07', name:'Sandbag Lunges', desc:'100m — single-leg strength, late-race legs.' },
-  { n:'08', name:'Wall Balls', desc:100reps — shoulder endurance to the finish.' },
+  { n:'08', name:"Wall Ball", desc:'100 reps - Shoulder Endurance to the finish.'},
 ];
 
 // 👉 Add each trainer's real email address below — used to route the contact
@@ -392,7 +392,6 @@ function coachCardHTML(c){
         <div class="font-mono text-[10px] uppercase tracking-widest text-signal mb-1">${c.cert}</div>
         <div class="font-display text-2xl uppercase leading-none mb-1">${c.name}</div>
         <div class="text-fog text-xs mb-3">${c.role}</div>
-        <p class="text-chalk text-sm leading-relaxed">${c.bio}</p>
       </div>
     </div>
   </div>`;
