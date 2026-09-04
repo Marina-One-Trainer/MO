@@ -57,11 +57,7 @@
 
   /* ============ COACH CAROUSEL ============ */
   .coach-track{ transition: transform 0.5s cubic-bezier(.65,0,.35,1); touch-action: pan-y; }
-  .dot{
-    width:7px; height:7px; border-radius:999px; background:#3A3D42;
-    transition:all .25s ease; cursor:pointer;
-    padding:9px; background-clip: content-box; box-sizing: content-box;
-  }
+  .dot{ width:7px; height:7px; border-radius:999px; background:#3A3D42; transition:all .25s ease; cursor:pointer; }
   .dot.active{ width:22px; background:#FFDD57; }
 
   /* ============ PRICING CAROUSEL ============ */
@@ -132,7 +128,7 @@
     <div class="flex flex-wrap gap-3 mt-2">
       <a href="#pricing" class="btn-signal px-6 py-3 rounded font-mono text-xs uppercase tracking-widest">See Pricing</a>
       <a href="#coaches" class="border border-steel hover:border-chalk transition-colors px-6 py-3 rounded font-mono text-xs uppercase tracking-widest text-chalk">Meet the Coaches</a>
-      <a href="Main.html" class="border border-steel hover:border-chalk transition-colors px-6 py-3 rounded font-mono text-xs uppercase tracking-widest text-chalk">Meet the Marina One Trainer</a>
+      <a href="/Main.htm"class="border border-steel hover:border-chalk transition-colour px-6 py-4 roundrd font-mono text-xs uppercase tracking-widest text-chalk">Meet the Marina One Trainer</a>
     </div>
   </section>
 
@@ -161,10 +157,10 @@
           <div id="coachTrack" class="coach-track flex"></div>
         </div>
 
-        <button id="coachPrev" aria-label="Previous coach" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-11 h-11 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+        <button id="coachPrev" aria-label="Previous coach" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button id="coachNext" aria-label="Next coach" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-11 h-11 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+        <button id="coachNext" aria-label="Next coach" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
@@ -184,10 +180,10 @@
           <div id="priceTrack" class="price-track flex"></div>
         </div>
 
-        <button id="pricePrev" aria-label="Previous package" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-11 h-11 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+        <button id="pricePrev" aria-label="Previous package" class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button id="priceNext" aria-label="Next package" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-11 h-11 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
+        <button id="priceNext" aria-label="Next package" class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-ink border border-steel items-center justify-center hover:border-signal transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
@@ -234,9 +230,9 @@
                 <option value="">Not sure yet</option>
                 <option value="Intro">Intro</option>
                 <option value="Hyrox Go">Hyrox Go</option>
-                <option value="Hyrox Performace">Hyrox Performance</option>
+                <option value="Hyrox Performace">Hyrox Performace</option>
                 <option value="Go Buddy">Go Buddy</option>
-                <option value="Performance Buddy">Performance Buddy</option>
+                <option value="Performace Buddy">Performace Buddy</option>
               </select>
             </div>
           </div>
@@ -297,7 +293,7 @@ const STATIONS = [
   { n:'05', name:'Rowing', desc:'1000m — pacing discipline, mid-race reset.' },
   { n:'06', name:'Farmers Carry', desc:'200m — grip and core under fatigue.' },
   { n:'07', name:'Sandbag Lunges', desc:'100m — single-leg strength, late-race legs.' },
-  { n:'08', name:"Wall Ball", desc:'100 reps - Shoulder Endurance to the finish.'},
+  { n:'08', name:'Wall Balls', desc:'75/100 reps — shoulder endurance to the finish.' },
 ];
 
 // 👉 Add each trainer's real email address below — used to route the contact
@@ -305,11 +301,11 @@ const STATIONS = [
 const COACHES = [
   {
     name:'Fazrul', role:'Senior Coach', cert:'HYROX Certified L1',
-    img:'Fazrul/Fazrul.jpg', email:'Faz.Rozali@virginactive.com.sg'
+    img:'Fazrul/Fazrul.Jpg', email:'Faz.Rozali@virginactive.com.sg'
   },
   {
     name:'Sheril', role:'Senior Coach', cert:'HYROX Certified L1',
-    img:'Sheril/sheril.jpeg', email:'sheril.Natasha@Virginactive.com.sg'
+    img:'Sheril/Sheril.jpeg', email:'sheril.Natasha@Virginactive.com.sg'
   },
   {
     name:'Ryan', role:'Senoir Coach', cert:'HYROX Certified L1',
@@ -325,7 +321,7 @@ const COACHES = [
   },
   {
     name:'Jomari',role:'Coach', cert:'Hyrox Certified L1',
-    img:'Jomari/Jomari.jpeg', email:'jomari.ciel@Virginactive.com.sg'
+    img:'Jomari/Jomari.Jpeg', email:'jomari.ciel@Virginactive.com.sg'
   }
 ];
 
@@ -347,7 +343,7 @@ const PACKAGES = [
     features:['Everything in Race Ready','Bi-weekly coach 2-on-1s','Race-day pacing strategy','Priority scheduling']
   },
   {
-    name:Performance Buddy', price:'$4,500', sessions:'24 Sessions', validity:'6 Months',
+    name:'Performace Buddy', price:'$4,500', sessions:'24 Sessions', validity:'6 Months',
     features:['Everything in Race Ready','Bi-weekly coach 2-on-1s','Race-day pacing strategy','Priority scheduling']
   },
 ];
@@ -392,6 +388,7 @@ function coachCardHTML(c){
         <div class="font-mono text-[10px] uppercase tracking-widest text-signal mb-1">${c.cert}</div>
         <div class="font-display text-2xl uppercase leading-none mb-1">${c.name}</div>
         <div class="text-fog text-xs mb-3">${c.role}</div>
+        <p class="text-chalk text-sm leading-relaxed">${c.bio}</p>
       </div>
     </div>
   </div>`;
