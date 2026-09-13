@@ -69,8 +69,10 @@
     .qr-input:focus{outline:none;border-color:var(--red);}
     .qr-btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:0.75rem 1.25rem;font-family:"DM Sans",sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 0.2s,transform 0.2s;}
     .qr-btn:hover{background:var(--red-deep);transform:translateY(-1px);}
-    #qr-code{margin-top:1.5rem;display:flex;justify-content:center;}
-    #qr-code canvas,#qr-code img{border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+    .qr-btn:disabled{opacity:0.6;cursor:default;transform:none;}
+    .contact-feedback{margin-top:1rem;font-size:0.82rem;line-height:1.5;}
+    .contact-feedback.success{color:#1a8a4a;}
+    .contact-feedback.error{color:var(--red);}
     .testimonials{background:var(--off-white);border-top:1px solid var(--border);padding:5rem 2rem;}
     .testimonials-inner{max-width:1100px;margin:0 auto;}
     .section-header{text-align:center;margin-bottom:3rem;}
@@ -164,12 +166,12 @@
     <div class="contact-card">
       <div class="card-label">Get In Touch</div>
       <div class="contact-title">Book a Session</div>
-      <p class="contact-note">Reuben will respond within 24–48 hours of scanning your QR code.</p>
+      <p class="contact-note">Enter your Member ID and send — Reuben will get your request directly and respond within 24–48 hours.</p>
       <div class="form-row">
         <input class="qr-input" type="text" id="memberId" placeholder="Your Member ID (e.g. 123456789)">
-        <button class="qr-btn" onclick="generateQRCode()">Generate QR</button>
+        <button class="qr-btn" id="sendBtn" onclick="sendTrainingRequest()">Send Request</button>
       </div>
-      <div id="qr-code"></div>
+      <p id="contactFeedback" class="contact-feedback" style="display:none;"></p>
     </div>
   </div>
 </div>
@@ -205,20 +207,68 @@
   <p>&copy; 2025 Virgin Active. All rights reserved.</p>
 </footer>
 
-<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<!-- EmailJS — sends the training request straight from the browser, no backend needed -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
   window.addEventListener("scroll",()=>{document.getElementById("mainNav").classList.toggle("scrolled",window.scrollY>40);});
   function switchTab(id,btn){document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));btn.classList.add("active");document.getElementById("panel-"+id).classList.add("active");}
-  function generateQRCode(){
-    const memberId=document.getElementById("memberId").value.trim()||"___________";
-    const email="Jin.Fa@virginactive.com.sg";
-    const subject=encodeURIComponent("Training Inquiry");
-    const body=encodeURIComponent("Hello Reuben,\n\nMy Member ID is: "+memberId+"\n\nI am interested in personal training and would like to book a wellness consultation.");
-    const mailtoLink="mailto:"+email+"?subject="+subject+"&body="+body;
-    const qrContainer=document.getElementById("qr-code");
-    qrContainer.innerHTML="";
-    new QRCode(qrContainer,{text:mailtoLink,width:200,height:200,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+
+  /* ======================================================================
+     EMAILJS CONFIG — same account used across the Virgin Active / HYROX
+     pages (emailjs.com → Email Services / Email Templates / Account → API Keys)
+     ====================================================================== */
+  const EMAILJS_PUBLIC_KEY  = 'ZuT4bqTVYOaswzJ7m';   // Account → General
+  const EMAILJS_SERVICE_ID  = 'service_lb7epfv';     // Email Services
+  const EMAILJS_TEMPLATE_ID = 'template_j32ykws';    // Email Templates
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  // This page belongs to Reuben, so requests route straight to his inbox —
+  // no trainer picker needed like on the main contact form.
+  const TRAINER_NAME = 'Reuben';
+  const TRAINER_EMAIL = 'Jin.Fa@virginactive.com.sg'; // 👉 replace with Reuben's real inbox
+
+  function sendTrainingRequest(){
+    const memberId = document.getElementById('memberId').value.trim();
+    const feedbackEl = document.getElementById('contactFeedback');
+    const sendBtn = document.getElementById('sendBtn');
+
+    if (!memberId){
+      feedbackEl.textContent = 'Please enter your Member ID.';
+      feedbackEl.className = 'contact-feedback error';
+      feedbackEl.style.display = 'block';
+      return;
+    }
+
+    feedbackEl.style.display = 'none';
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending...';
+
+    const templateParams = {
+      to_email: TRAINER_EMAIL,
+      trainer_name: TRAINER_NAME,
+      member_id: memberId,
+    };
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      .then(() => {
+        feedbackEl.textContent = 'Sent! Reuben will reach out within 24–48 hours.';
+        feedbackEl.className = 'contact-feedback success';
+        feedbackEl.style.display = 'block';
+        document.getElementById('memberId').value = '';
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send Request';
+      })
+      .catch((err) => {
+        console.error('EmailJS error:', err);
+        feedbackEl.textContent = 'Something went wrong sending your request — please try again.';
+        feedbackEl.className = 'contact-feedback error';
+        feedbackEl.style.display = 'block';
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send Request';
+      });
   }
+
   let currentSlideIndex=0;
   let slideInterval;
   function showSlide(index){
