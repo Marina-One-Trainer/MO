@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+e<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -841,7 +841,8 @@
                 <input type="checkbox" id="pdaConsent" required>
                 <label for="pdaConsent">I understand that my data will be used in accordance with Virgin Active's Privacy & Data Handling practices.</label>
             </div>
-            <button type="submit" class="btn-primary" style="width:100%; font-size:0.9rem; padding:1rem;">
+            <p class="form-error" id="formError"></p>
+            <button type="submit" id="submitBtn" class="btn-primary" style="width:100%; font-size:0.9rem; padding:1rem;">
                 Submit Request
             </button>
         </form>
@@ -850,36 +851,39 @@
         </div>
     </div>
 </section>
-
+ 
 <footer>
     <div class="footer-logo">
         <img src="virgin-active-logo.png" alt="Virgin Active">
     </div>
     <p>© 2025 Virgin Active. All rights reserved.</p>
 </footer>
-
+ 
+<!-- EmailJS — sends the request straight from the browser to the selected trainer, no backend needed -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+ 
 <script>
     window.addEventListener('scroll', () => {
         document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
     });
-
+ 
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     const mobileClose = document.getElementById('mobileClose');
-
+ 
     hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
     mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
     document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
-
+ 
     const selectorBtns = document.querySelectorAll('.coach-selector button');
-
+ 
     function updatePrices(type) {
         ['coach', 'senior', 'specialist'].forEach(t => {
             document.querySelectorAll(`.${t}-price`).forEach(el => el.classList.add('hidden'));
         });
         document.querySelectorAll(`.${type}-price`).forEach(el => el.classList.remove('hidden'));
     }
-
+ 
     selectorBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             selectorBtns.forEach(b => b.classList.remove('active'));
@@ -887,9 +891,9 @@
             updatePrices(btn.dataset.type);
         });
     });
-
+ 
     updatePrices('coach');
-
+ 
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, i) => {
@@ -900,19 +904,19 @@
             }
         });
     }, { threshold: 0.1 });
-
+ 
     reveals.forEach(el => observer.observe(el));
-
+ 
     const trigger = document.getElementById('trainerTrigger');
     const menu = document.getElementById('trainerMenu');
     const trainerLabel = document.getElementById('trainerLabel');
     const trainerInput = document.getElementById('trainer');
-
+ 
     trigger.addEventListener('click', () => {
         const isOpen = menu.classList.toggle('open');
         trigger.classList.toggle('open', isOpen);
     });
-
+ 
     document.querySelectorAll('.custom-option').forEach(opt => {
         opt.addEventListener('click', () => {
             const value = opt.dataset.value;
@@ -925,43 +929,98 @@
             trigger.classList.remove('open');
         });
     });
-
+ 
     document.addEventListener('click', (e) => {
         if (!e.target.closest('#trainerDropdown')) {
             menu.classList.remove('open');
             trigger.classList.remove('open');
         }
     });
-
+ 
+    /* ======================================================================
+       EMAILJS CONFIG
+       Template "New Prospect" must use these exact variable names:
+         {{trainer_name}}  {{From_Name}}  {{Member_ID}}
+       and its "To Email" field must be set to {{to_email}}.
+       ====================================================================== */
+    const EMAILJS_PUBLIC_KEY  = 'ZuT4bqTVYOaswzJ7m';    // Account → General
+    const EMAILJS_SERVICE_ID  = 'service_lb7epfv';      // Email Services
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // 👉 paste the ID of the "New Prospect" template
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+ 
+    /* ======================================================================
+       TRAINER INBOX MAP — whoever is picked in the dropdown receives the email
+       ====================================================================== */
+    const TRAINER_EMAILS = {
+        Fazrul: 'Faz.Rozali@virginactive.com.sg',
+        Sheril: 'Sheril.Natasha@virginactive.com.sg',
+        Ryan:   'Tai.Ryan@virginactive.com.sg',
+        Daya:   'Daya.Johari@virginactive.com.sg',
+        Joshua: 'Joshua.Koh@virginactive.com.sg',
+        Mario:  'Mario.Chua@virginactive.com.sg',
+        Roki:   'Roki.Tan@virginactive.com.sg',
+        Haris:  'Haris.Ismail@virginactive.com.sg',
+        Chips:  'Chips.Wang@virginactive.com.sg',
+        Gwen:   'Gwen.Kua@virginactive.com.sg',
+        Po:     'PoTye.Quah@virginactive.com.sg',
+        Hafiz:  'Hafiz.Raz@virginactive.com.sg',
+        Reuben: 'Jin.Fa@virginactive.com.sg',   // 👉 replace with Reuben's real inbox
+        Haziq:  'Haziq.Suratman@virginactive.com.sg',
+    };
+ 
     document.getElementById('membershipForm').addEventListener('submit', function(e) {
         e.preventDefault();
-
+        const form = this;
+        const errorEl = document.getElementById('formError');
+        const submitBtn = document.getElementById('submitBtn');
+ 
+        const fullName = document.getElementById('fullName').value.trim();
+        const memberId = document.getElementById('memberId').value.trim();
+        const trainerName = trainerInput.value;
+ 
+        const showError = (msg) => {
+            errorEl.textContent = msg;
+            errorEl.style.display = 'block';
+        };
+ 
+        if (!fullName || !memberId) return showError('Please enter your full name and member ID.');
+        if (!trainerName) return showError('Please select a trainer.');
         if (!document.getElementById('pdaConsent').checked) {
-            alert('Please agree to our Privacy & Data Handling practices.');
-            return;
+            return showError('Please agree to our Privacy & Data Handling practices.');
         }
-
-        if (!trainerInput.value) {
-            alert('Please select a trainer.');
-            return;
-        }
-
-        fetch('https://formspree.io/f/xpwdngnd', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: new FormData(this)
-        })
-        .then(res => {
-            if (res.ok) {
+        errorEl.style.display = 'none';
+ 
+        // Variable names match the EmailJS template exactly (case-sensitive).
+        const templateParams = {
+            to_email: TRAINER_EMAILS[trainerName] || '',
+            trainer_name: trainerName,
+            From_Name: fullName,
+            Member_ID: memberId,
+        };
+ 
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+ 
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then(() => {
                 document.getElementById('pdaMessage').style.display = 'block';
-                this.reset();
-            } else {
-                alert('There was an error. Please try again.');
-            }
-        })
-        .catch(() => alert('There was an error. Please try again.'));
+                form.reset();
+                trainerInput.value = '';
+                trainerLabel.textContent = 'Select your trainer';
+                trigger.classList.remove('selected');
+                document.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+            })
+            .catch((err) => {
+                console.error('EmailJS error:', err);
+                showError('There was an error sending your request. Please try again.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Request';
+            });
     });
 </script>
-
+ 
 </body>
 </html>
+ 
